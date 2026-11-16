@@ -1,4 +1,15 @@
+
 node_modules/
 dist/
+.astro/
 .env
+.env.*
+!.env.example
 *.log
+npm-debug.log*
+.agents/
+.claude/skills/
+.claude/settings.local.json
+Thumbs.db
+.DS_Store
+.vercel/
