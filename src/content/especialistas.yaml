@@ -1,0 +1,36 @@
+# Nombres confirmados en el plan. Rol de Erick y todas las biografías: PENDIENTE.
+- id: efrain-aparicio
+  nombre: Efraín Aparicio
+  rol: { es: Chef, en: Chef }
+  area: cocina
+  bio: { es: PENDIENTE, en: PENDIENTE }
+  foto:
+    src: ../assets/photos/cocina/especialista/chef-efrain-aparicio.webp
+    alt:
+      es: El chef Efraín Aparicio, con delantal gris y los brazos cruzados, frente a un muro de piedra.
+      en: Chef Efraín Aparicio, in a grey apron with arms crossed, in front of a stone wall.
+  pendiente: true
+
+- id: erick-gaytan
+  nombre: Erick Gaytán
+  rol: { es: PENDIENTE, en: PENDIENTE }
+  area: bar
+  bio: { es: PENDIENTE, en: PENDIENTE }
+  foto:
+    src: ../assets/photos/bar/especialista/erick-gaytan.webp
+    alt:
+      es: Erick Gaytán sonríe, sentado, con camisa negra, en el bar iluminado con velas.
+      en: Erick Gaytán smiles, seated, in a black shirt, in the candlelit bar.
+  pendiente: true
+
+- id: laura-sanchez
+  nombre: Laura Sánchez
+  rol: { es: Sommelier, en: Sommelier }
+  area: wine-bar
+  bio: { es: PENDIENTE, en: PENDIENTE }
+  foto:
+    src: ../assets/photos/wine-bar/especialista/sommelier-laura-sanchez.webp
+    alt:
+      es: La sommelier Laura Sánchez sostiene una copa mientras le sirven vino blanco.
+      en: Sommelier Laura Sánchez holds a glass as white wine is poured.
+  pendiente: true

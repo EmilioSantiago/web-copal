@@ -1,0 +1,24 @@
+# Tipos de evento privado. Nombres y descripciones: PENDIENTE hasta que Copal los defina.
+- id: evento-1
+  nombre: { es: PENDIENTE, en: PENDIENTE }
+  descripcion: { es: PENDIENTE, en: PENDIENTE }
+  espacios: [salon-privado, patio]
+  foto:
+    src: ../assets/photos/eventos-privados/galeria/evento-1.webp
+    alt:
+      es: Una pareja se besa en medio de una celebración, rodeada de invitados y músicos.
+      en: A couple kisses in the middle of a celebration, surrounded by guests and musicians.
+  orden: 1
+  pendiente: true
+
+- id: evento-2
+  nombre: { es: PENDIENTE, en: PENDIENTE }
+  descripcion: { es: PENDIENTE, en: PENDIENTE }
+  espacios: [wine-bar]
+  foto:
+    src: ../assets/photos/eventos-privados/galeria/evento-2.webp
+    alt:
+      es: Un grupo de invitadas ríe y conversa bajo una lámpara tejida.
+      en: A group of guests laughs and talks under a woven lamp.
+  orden: 2
+  pendiente: true

@@ -1,0 +1,39 @@
+# Club Social del Vino. NO cargar fechas ni colaboradores hasta que Copal los confirme.
+# Los flyers (club-flyer-*.webp) no se usan aún: muestran fechas y nombres sin confirmar.
+- id: proxima-edicion
+  estado: proxima
+  titulo: { es: PENDIENTE, en: PENDIENTE }
+  fecha: PENDIENTE
+  colaboradores: PENDIENTE
+  descripcion: { es: PENDIENTE, en: PENDIENTE }
+  pendiente: true
+
+- id: edicion-pasada-1
+  estado: pasada
+  titulo: { es: PENDIENTE, en: PENDIENTE }
+  fecha: PENDIENTE
+  colaboradores: PENDIENTE
+  descripcion: { es: PENDIENTE, en: PENDIENTE }
+  fotos:
+    - src: ../assets/photos/wine-bar/club-vino/club-experiencia-1.webp
+      alt:
+        es: Vista desde arriba de la mesa larga del wine bar, llena de invitados y copas.
+        en: Overhead view of the wine bar's long table, full of guests and glasses.
+    - src: ../assets/photos/wine-bar/club-vino/club-experiencia-2.webp
+      alt:
+        es: Dos personas cargan varias botellas de vino entre los invitados.
+        en: Two people carry several bottles of wine among the guests.
+  pendiente: true
+
+- id: edicion-pasada-2
+  estado: pasada
+  titulo: { es: PENDIENTE, en: PENDIENTE }
+  fecha: PENDIENTE
+  colaboradores: PENDIENTE
+  descripcion: { es: PENDIENTE, en: PENDIENTE }
+  fotos:
+    - src: ../assets/photos/wine-bar/club-vino/club-experiencia-3.webp
+      alt:
+        es: Varias manos brindan con copas de vino tinto sobre una mesa de madera.
+        en: Several hands toast with glasses of red wine over a wooden table.
+  pendiente: true

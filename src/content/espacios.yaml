@@ -1,0 +1,53 @@
+# Espacios de Copal. No existe terraza: el exterior es el patio, donde está la parrilla de leña.
+- id: patio
+  area: patio
+  nombre: { es: Patio central, en: Central patio }
+  descripcion: { es: PENDIENTE, en: PENDIENTE }
+  capacidad: PENDIENTE
+  reservable: true
+  reservarTexto: { es: Reservar en el patio, en: Book in the patio }
+  foto:
+    src: ../assets/photos/patio/espacios/restaurante-copal.webp
+    alt:
+      es: El patio de noche, con lámparas tejidas y guirnaldas de cempasúchil sobre las mesas.
+      en: The patio at night, with woven lamps and marigold garlands over the tables.
+  orden: 1
+  pendiente: true
+
+- id: cocina-parrilla
+  area: cocina
+  nombre: { es: La parrilla de leña, en: The wood-fire grill }
+  descripcion: { es: PENDIENTE, en: PENDIENTE }
+  reservable: false
+  foto:
+    src: ../assets/photos/cocina/espacios/parrillero-parrilla-lena.webp
+    alt:
+      es: El parrillero cocina sobre las brasas de la parrilla de leña.
+      en: The grill cook working over the embers of the wood-fire grill.
+  orden: 2
+  pendiente: true
+
+- id: wine-bar
+  area: wine-bar
+  nombre: { es: Wine bar, en: Wine bar }
+  descripcion: { es: PENDIENTE, en: PENDIENTE }
+  capacidad: PENDIENTE
+  reservable: true
+  reservarTexto: { es: Reservar en el wine bar, en: Book in the wine bar }
+  foto:
+    src: ../assets/photos/wine-bar/espacios/wine-espacio-1.webp
+    alt:
+      es: La mesa larga del wine bar, frente a la cava iluminada.
+      en: The wine bar's long table, facing the lit wine wall.
+  orden: 3
+  pendiente: true
+
+- id: salon-privado
+  area: salon-privado
+  nombre: { es: Salón privado, en: Private room }
+  descripcion: { es: PENDIENTE, en: PENDIENTE }
+  capacidad: PENDIENTE
+  reservable: true
+  # Sin foto todavía.
+  orden: 4
+  pendiente: true

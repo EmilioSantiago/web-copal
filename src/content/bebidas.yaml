@@ -1,0 +1,39 @@
+# Bebidas con historia (bar) y vinos (wine bar). NO cargar nombres hasta confirmar.
+- id: coctel-1
+  area: bar
+  tipo: coctel
+  nombre: { es: PENDIENTE, en: PENDIENTE }
+  historia: { es: PENDIENTE, en: PENDIENTE }
+  foto:
+    src: ../assets/photos/bar/bebidas/chintextle.webp
+    alt:
+      es: Un coctel con espuma, servido en copa sobre la barra.
+      en: A cocktail with foam, served in a coupe on the bar.
+  orden: 1
+  pendiente: true
+
+- id: coctel-2
+  area: bar
+  tipo: coctel
+  nombre: { es: PENDIENTE, en: PENDIENTE }
+  historia: { es: PENDIENTE, en: PENDIENTE }
+  foto:
+    src: ../assets/photos/bar/bebidas/cafe-mangle.webp
+    alt:
+      es: Un coctel dorado en copa, sobre una base de metal oxidado.
+      en: A golden cocktail in a coupe, on a rusted metal ledge.
+  orden: 2
+  pendiente: true
+
+- id: vino-1
+  area: wine-bar
+  tipo: vino
+  nombre: { es: PENDIENTE, en: PENDIENTE }
+  historia: { es: PENDIENTE, en: PENDIENTE }
+  foto:
+    src: ../assets/photos/wine-bar/bebidas/vinos.webp
+    alt:
+      es: Botellas de vino tinto en una repisa oscura del wine bar.
+      en: Bottles of red wine on a dark shelf in the wine bar.
+  orden: 1
+  pendiente: true

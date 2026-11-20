@@ -7,6 +7,7 @@ import ReservarFijo from '../components/reserva/ReservarFijo.astro';
 import { SITE } from '../config/site';
 import { defaultLang, type Lang, type RouteKey } from '../i18n/routes';
 import { alternatesFor, pathFor, useTranslations } from '../i18n/utils';
+import { verificarPendientes } from '../lib/pendientes';
 
 interface Props {
 	lang: Lang;
@@ -18,6 +19,9 @@ interface Props {
 }
 
 const { lang, route, title, description } = Astro.props;
+
+// En build de producción falla si quedan datos PENDIENTE; en dev solo avisa.
+await verificarPendientes();
 const t = useTranslations(lang);
 
 const pageTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · ${SITE.city}`;
