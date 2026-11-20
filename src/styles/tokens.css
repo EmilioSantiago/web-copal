@@ -1,0 +1,93 @@
+/*
+ * Tokens de diseño de COPAL — "oscuridad iluminada en naranja".
+ * Copal de noche: casi todo oscuro; la luz es naranja (faroles,
+ * lámparas tejidas, fuego, cempasúchil).
+ *
+ * Contraste WCAG medido (texto normal pide 4.5:1; controles y texto grande 3:1):
+ *   copal / noche 15.27 · copal / marmol 13.99 · copal / barro 9.76
+ *   humo / noche 7.89 · humo / marmol 7.22 · humo / barro 5.04
+ *   farol / noche 7.16 · farol / marmol 6.56 · farol / barro 4.58
+ *   noche sobre farol (botón Reservar) 7.16
+ *   ambar / noche 8.72 · cempasuchil / noche 9.58
+ *   terracota-texto / noche 5.73 · terracota-texto / marmol 5.24
+ *   terracota / noche 3.92 (solo texto grande o decoración)
+ *   borde-control / noche 3.70 · borde-control / marmol 3.39
+ *   veta / noche 1.88 → SOLO decoración, nunca borde de un control.
+ */
+
+:root {
+	/* ── Paleta base ── */
+	--c-noche: #120e0b; /* fondo casi negro cálido */
+	--c-marmol: #1d1815; /* superficies: mármol negro */
+	--c-barro: #5b2418; /* bandas entre áreas */
+	--c-copal: #efe4d2; /* texto principal: crema de resina */
+	--c-humo: #b2a493; /* texto secundario */
+	--c-farol: #f0802a; /* LA luz: naranja protagonista */
+	--c-ambar: #e3a24a; /* luz cálida secundaria */
+	--c-cempasuchil: #f2a922; /* destello puntual */
+	--c-terracota: #b4552f; /* acento decorativo */
+	--c-terracota-texto: #d4714a; /* terracota legible como texto */
+	--c-veta: #4a3f37; /* líneas decorativas */
+	--c-borde-control: #7a6a5c; /* bordes de campos y controles */
+
+	/* ── Roles (úsalos en componentes, no la paleta directa) ── */
+	--fondo: var(--c-noche);
+	--superficie: var(--c-marmol);
+	--banda: var(--c-barro);
+	--texto: var(--c-copal);
+	--texto-suave: var(--c-humo);
+	--acento: var(--c-farol);
+	--acento-texto: var(--c-noche); /* texto sobre fondo naranja */
+	--enlace: var(--c-farol);
+	--foco: var(--c-farol);
+	--linea: var(--c-veta);
+	--borde-control: var(--c-borde-control);
+
+	/* Resplandor de farol: luz radial cálida, nunca un plano saturado. */
+	--resplandor: radial-gradient(
+		closest-side,
+		rgb(240 128 42 / 0.22),
+		rgb(227 162 74 / 0.08) 55%,
+		transparent
+	);
+
+	/* ── Tipografía ── */
+	/* --font-titulos (Gloock) y --font-texto (Hanken Grotesk) los define
+	   el componente <Font /> de Astro en BaseLayout. */
+	--fuente-titulos: var(--font-titulos);
+	--fuente-texto: var(--font-texto);
+
+	/* Escala fluida: crece con la pantalla entre 375px y 1440px. */
+	--t-sm: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
+	--t-base: clamp(1rem, 0.96rem + 0.18vw, 1.125rem);
+	--t-md: clamp(1.25rem, 1.15rem + 0.45vw, 1.5rem);
+	--t-lg: clamp(1.625rem, 1.4rem + 1vw, 2.25rem);
+	--t-xl: clamp(2.25rem, 1.75rem + 2.2vw, 3.75rem);
+	--t-2xl: clamp(3rem, 2rem + 4.5vw, 6.5rem);
+
+	--interlinea-texto: 1.6;
+	--interlinea-titulo: 1.05;
+	--medida: 62ch; /* largo de línea máximo para lectura */
+	--medida-estrecha: 44ch;
+
+	/* ── Espacio ── */
+	--e-1: 0.25rem;
+	--e-2: 0.5rem;
+	--e-3: 0.75rem;
+	--e-4: 1rem;
+	--e-5: 1.5rem;
+	--e-6: 2rem;
+	--e-7: 3rem;
+	--e-8: 4.5rem;
+	--e-9: clamp(4.5rem, 3rem + 6vw, 9rem); /* entre secciones */
+	--margen-lateral: clamp(1.25rem, 0.6rem + 3vw, 4rem);
+	--ancho-max: 90rem;
+
+	/* ── Forma y movimiento ── */
+	--radio-control: 2px;
+	--duracion: 220ms;
+	--curva: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+	/* Área segura del celular (muesca, barra de inicio). */
+	--seguro-abajo: env(safe-area-inset-bottom, 0px);
+}

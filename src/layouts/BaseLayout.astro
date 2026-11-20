@@ -1,0 +1,64 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import { SITE } from '../config/site';
+import { defaultLang, type Lang, type RouteKey } from '../i18n/routes';
+import { alternatesFor, pathFor, useTranslations } from '../i18n/utils';
+
+interface Props {
+	lang: Lang;
+	/** Clave de la página en routes.ts (para canonical y hreflang). */
+	route: RouteKey;
+	/** Título propio de la página. En el inicio se omite y queda solo "COPAL". */
+	title?: string;
+	description?: string;
+}
+
+const { lang, route, title, description } = Astro.props;
+const t = useTranslations(lang);
+
+const pageTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · ${SITE.city}`;
+const pageDescription = description ?? t('meta.descripcion');
+
+const canonical = new URL(pathFor(route, lang), Astro.site);
+const alternates = alternatesFor(route).map(({ lang, path }) => ({
+	lang,
+	href: new URL(path, Astro.site).href,
+}));
+const xDefault = new URL(pathFor(route, defaultLang), Astro.site).href;
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>{pageTitle}</title>
+		<meta name="description" content={pageDescription} />
+		<link rel="canonical" href={canonical.href} />
+		{alternates.map((alt) => <link rel="alternate" hreflang={alt.lang} href={alt.href} />)}
+		<link rel="alternate" hreflang="x-default" href={xDefault} />
+
+		<meta name="theme-color" content="#120e0b" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content={SITE.name} />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={pageDescription} />
+		<meta property="og:url" content={canonical.href} />
+		<meta property="og:locale" content={lang === 'es' ? 'es_MX' : 'en_US'} />
+
+		<Font cssVariable="--font-titulos" preload />
+		<Font cssVariable="--font-texto" preload />
+		<slot name="head" />
+	</head>
+	<body>
+		<a class="saltar" href="#contenido">{t('a11y.saltarContenido')}</a>
+		<slot name="header" />
+		<main id="contenido" tabindex="-1">
+			<slot />
+		</main>
+		<slot name="footer" />
+	</body>
+</html>

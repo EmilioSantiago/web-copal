@@ -1,0 +1,133 @@
+@import './tokens.css';
+
+/* ── Reset mínimo ── */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+* {
+	margin: 0;
+}
+
+html {
+	color-scheme: dark;
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+body {
+	min-height: 100dvh;
+	background-color: var(--fondo);
+	color: var(--texto);
+	font-family: var(--fuente-texto);
+	font-size: var(--t-base);
+	line-height: var(--interlinea-texto);
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+svg,
+video {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+	color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: var(--fuente-titulos);
+	font-weight: 400;
+	line-height: var(--interlinea-titulo);
+	text-wrap: balance;
+}
+
+p {
+	max-width: var(--medida);
+	text-wrap: pretty;
+}
+
+a {
+	color: var(--enlace);
+	text-underline-offset: 0.2em;
+	text-decoration-thickness: 1px;
+}
+
+a:hover {
+	text-decoration-thickness: 2px;
+}
+
+::selection {
+	background: var(--c-farol);
+	color: var(--c-noche);
+}
+
+/* ── Foco de teclado: anillo naranja, siempre visible ── */
+:focus-visible {
+	outline: 2px solid var(--foco);
+	outline-offset: 3px;
+	border-radius: var(--radio-control);
+}
+
+/* ── "Saltar al contenido": oculto hasta recibir foco ── */
+.saltar {
+	position: absolute;
+	inset-block-start: var(--e-3);
+	inset-inline-start: var(--e-3);
+	z-index: 100;
+	padding: var(--e-3) var(--e-4);
+	background: var(--acento);
+	color: var(--acento-texto);
+	font-weight: 600;
+	text-decoration: none;
+	border-radius: var(--radio-control);
+	transform: translateY(-200%);
+}
+
+.saltar:focus-visible {
+	transform: none;
+	outline-color: var(--texto);
+}
+
+/* Solo para lectores de pantalla. */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* ── Movimiento reducido: se respeta en todo el sitio ── */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* El destino de "Saltar al contenido" recibe foco sin mostrar un marco enorme. */
+#contenido:focus {
+	outline: none;
+}
