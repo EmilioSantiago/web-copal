@@ -1,0 +1,85 @@
+---
+/**
+ * Bloque de reserva: cierra las páginas con una invitación clara.
+ * Banda en barro con la luz de un farol a un lado.
+ * Al verse, el botón fijo del celular se oculta (data-oculta-reservar-fijo).
+ */
+import ReservarButton from './ReservarButton.astro';
+import type { Lang } from '../../i18n/routes';
+import { pathFor, useTranslations } from '../../i18n/utils';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="reserva" aria-labelledby="reserva-titulo" data-oculta-reservar-fijo>
+	<div class="reserva-contenido">
+		<h2 id="reserva-titulo">{t('reserva.titulo')}</h2>
+		<p>{t('reserva.texto')}</p>
+		<div class="reserva-acciones">
+			<ReservarButton lang={lang} />
+			<a class="reserva-visitanos" href={pathFor('visitanos', lang)}>{t('reserva.visitanos')}</a>
+		</div>
+	</div>
+</section>
+
+<style>
+	.reserva {
+		position: relative;
+		overflow: hidden;
+		padding: var(--e-9) var(--margen-lateral);
+		background-color: var(--banda);
+		isolation: isolate;
+	}
+
+	/* El farol: luz cálida que entra desde la derecha, no un plano de color. */
+	.reserva::before {
+		content: '';
+		position: absolute;
+		inset-block: -30%;
+		inset-inline-end: -20%;
+		width: min(70rem, 120%);
+		z-index: -1;
+		background: radial-gradient(closest-side, rgb(240 128 42 / 0.32), rgb(227 162 74 / 0.08) 60%, transparent);
+	}
+
+	.reserva-contenido {
+		display: grid;
+		gap: var(--e-5);
+		max-width: var(--ancho-max);
+		margin-inline: auto;
+	}
+
+	h2 {
+		font-size: var(--t-xl);
+		max-width: 14ch;
+	}
+
+	p {
+		max-width: var(--medida-estrecha);
+	}
+
+	.reserva-acciones {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--e-4) var(--e-6);
+		margin-block-start: var(--e-3);
+	}
+
+	/* Sobre barro, el texto crema contrasta mejor que el naranja (9.76 vs 4.58). */
+	.reserva-visitanos {
+		display: inline-flex;
+		align-items: center;
+		min-height: 2.75rem;
+		color: var(--texto);
+	}
+
+	.reserva-visitanos:hover {
+		color: var(--c-cempasuchil);
+	}
+</style>

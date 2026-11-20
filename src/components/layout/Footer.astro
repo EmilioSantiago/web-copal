@@ -1,0 +1,208 @@
+---
+/**
+ * Footer: marca, páginas, contacto e idioma.
+ * Los datos de contacto salen de SITE; los que siguen PENDIENTE se muestran
+ * marcados, nunca inventados.
+ */
+import Logo from '../ui/Logo.astro';
+import Pendiente from '../ui/Pendiente.astro';
+import { SITE, esPendiente } from '../../config/site';
+import { languages, langs, type Lang, type RouteKey } from '../../i18n/routes';
+import { pathFor, useTranslations, type UIKey } from '../../i18n/utils';
+
+interface Props {
+	lang: Lang;
+	route: RouteKey;
+}
+
+const { lang, route } = Astro.props;
+const t = useTranslations(lang);
+
+const paginas: { route: RouteKey; label: UIKey }[] = [
+	{ route: 'cocina', label: 'nav.cocina' },
+	{ route: 'bar', label: 'nav.bar' },
+	{ route: 'wineBar', label: 'nav.wineBar' },
+	{ route: 'eventos', label: 'nav.eventos' },
+	{ route: 'visitanos', label: 'nav.visitanos' },
+];
+
+// Cada dato: etiqueta, valor y (si es enlace) a dónde lleva.
+const contacto: { label: UIKey; valor: string; href?: string; externo?: boolean }[] = [
+	{ label: 'footer.direccion', valor: SITE.direccion, href: SITE.googleMapsUrl, externo: true },
+	{ label: 'footer.telefono', valor: SITE.telefono, href: `tel:${SITE.telefono}` },
+	{ label: 'footer.whatsapp', valor: SITE.whatsapp },
+	{ label: 'footer.instagram', valor: SITE.instagram, href: SITE.instagram, externo: true },
+];
+
+const otroIdioma = langs.find((l) => l !== lang)!;
+const anio = new Date().getFullYear();
+---
+
+<footer class="footer" data-oculta-reservar-fijo>
+	<div class="footer-rejilla">
+		<div class="footer-marca">
+			<a class="marca" href={pathFor('inicio', lang)} aria-label={t('marca.inicio')}>
+				<Logo />
+			</a>
+			<p>{SITE.city}</p>
+		</div>
+
+		<nav class="footer-columna" aria-labelledby="footer-paginas">
+			<h2 id="footer-paginas">{t('footer.paginas')}</h2>
+			<ul role="list">
+				{
+					paginas.map((p) => (
+						<li>
+							<a href={pathFor(p.route, lang)} aria-current={p.route === route ? 'page' : undefined}>
+								{t(p.label)}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<div class="footer-columna">
+			<h2>{t('footer.contacto')}</h2>
+			<dl>
+				{
+					contacto.map((c) => (
+						<div>
+							<dt>{t(c.label)}</dt>
+							<dd>
+								{esPendiente(c.valor) ? (
+									<Pendiente lang={lang} />
+								) : c.href && !esPendiente(c.href) ? (
+									<a
+										href={c.href}
+										{...(c.externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+									>
+										{c.valor}
+									</a>
+								) : (
+									c.valor
+								)}
+							</dd>
+						</div>
+					))
+				}
+			</dl>
+		</div>
+	</div>
+
+	<div class="footer-base">
+		<p>© {anio} {t('footer.derechos')}</p>
+		<a class="idioma" href={pathFor(route, otroIdioma)} hreflang={otroIdioma} lang={otroIdioma}>
+			{languages[otroIdioma]}
+		</a>
+	</div>
+</footer>
+
+<style>
+	.footer {
+		padding: var(--e-8) var(--margen-lateral) calc(var(--e-6) + var(--seguro-abajo));
+		background-color: var(--fondo);
+		border-block-start: 1px solid var(--linea);
+		font-size: var(--t-sm);
+	}
+
+	.footer-rejilla {
+		display: grid;
+		gap: var(--e-7);
+		max-width: var(--ancho-max);
+		margin-inline: auto;
+	}
+
+	@media (min-width: 48rem) {
+		.footer-rejilla {
+			/* Asimétrico: la marca respira, las columnas son estrechas. */
+			grid-template-columns: 2fr 1fr 1.4fr;
+		}
+	}
+
+	.footer-marca {
+		display: grid;
+		align-content: start;
+		gap: var(--e-3);
+		color: var(--texto-suave);
+	}
+
+	.marca {
+		justify-self: start;
+		color: var(--texto);
+		font-size: var(--t-md);
+		text-decoration: none;
+	}
+
+	.marca:hover {
+		color: var(--c-farol);
+	}
+
+	h2 {
+		margin-block-end: var(--e-4);
+		color: var(--texto-suave);
+		font-family: var(--fuente-texto);
+		font-size: var(--t-sm);
+		font-weight: 500;
+	}
+
+	ul {
+		display: grid;
+		gap: var(--e-1);
+		padding: 0;
+		list-style: none;
+	}
+
+	.footer-columna a {
+		display: inline-block;
+		padding-block: var(--e-1);
+		color: var(--texto);
+		text-decoration: none;
+	}
+
+	.footer-columna a:hover {
+		color: var(--c-farol);
+		text-decoration: underline;
+	}
+
+	.footer-columna a[aria-current='page'] {
+		color: var(--c-farol);
+	}
+
+	dl {
+		display: grid;
+		gap: var(--e-3);
+	}
+
+	dt {
+		color: var(--texto-suave);
+	}
+
+	dd {
+		margin: 0;
+	}
+
+	.footer-base {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: center;
+		gap: var(--e-4);
+		max-width: var(--ancho-max);
+		margin: var(--e-8) auto 0;
+		padding-block-start: var(--e-5);
+		border-block-start: 1px solid var(--linea);
+		color: var(--texto-suave);
+	}
+
+	.idioma {
+		display: inline-flex;
+		align-items: center;
+		min-height: 2.75rem;
+		color: var(--texto-suave);
+	}
+
+	.idioma:hover {
+		color: var(--c-farol);
+	}
+</style>

@@ -4,6 +4,7 @@
  * fuentes, idioma y layout funcionan. El inicio real se construye en el paso 5.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ReservaBlock from '../components/reserva/ReservaBlock.astro';
 import { SITE } from '../config/site';
 import type { Lang } from '../i18n/routes';
 import { useTranslations } from '../i18n/utils';
@@ -21,6 +22,7 @@ const t = useTranslations(lang);
 		<h1>{SITE.name}</h1>
 		<p>{t('inicio.provisional')}</p>
 	</section>
+	<ReservaBlock lang={lang} />
 </BaseLayout>
 
 <style>

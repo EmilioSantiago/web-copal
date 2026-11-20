@@ -1,0 +1,117 @@
+---
+/**
+ * Botón "Reservar" fijo abajo, SOLO en celular.
+ * - Respeta el área segura (barra de inicio del iPhone).
+ * - Se oculta cuando se ve el bloque de reserva o el footer, así nunca
+ *   tapa el final de la página ni duplica un botón que ya está a la vista.
+ * - Dentro de una sección marcada con data-espacio-reservar cambia su texto
+ *   (ej. "Reservar en el patio") y muestra data-espacio-nota debajo.
+ *   Ejemplo: <section data-espacio-reservar="Reservar en el patio"
+ *                     data-espacio-nota="Pídelo en las notas de tu reserva.">
+ */
+import ReservarButton from './ReservarButton.astro';
+import type { Lang } from '../../i18n/routes';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<div class="reservar-fijo" data-reservar-fijo>
+	<p class="reservar-fijo-nota" data-reservar-nota hidden></p>
+	<ReservarButton lang={lang} class="reservar-fijo-boton" />
+</div>
+
+<style>
+	.reservar-fijo {
+		position: fixed;
+		inset-inline: 0;
+		inset-block-end: 0;
+		z-index: 40;
+		display: grid;
+		gap: var(--e-2);
+		padding: var(--e-3) var(--margen-lateral) calc(var(--e-3) + var(--seguro-abajo));
+		background-color: rgb(18 14 11 / 0.94);
+		box-shadow: 0 -1px 0 var(--linea);
+		transition:
+			transform var(--duracion) var(--curva),
+			visibility 0s linear;
+	}
+
+	.reservar-fijo[data-oculto] {
+		transform: translateY(100%);
+		visibility: hidden;
+		transition:
+			transform var(--duracion) var(--curva),
+			visibility 0s linear var(--duracion);
+	}
+
+	.reservar-fijo-nota {
+		color: var(--texto-suave);
+		font-size: var(--t-sm);
+		text-align: center;
+	}
+
+	.reservar-fijo :global(.reservar-fijo-boton) {
+		width: 100%;
+	}
+
+	@media (min-width: 64rem) {
+		.reservar-fijo {
+			display: none;
+		}
+	}
+</style>
+
+<script>
+	const fijo = document.querySelector<HTMLElement>('[data-reservar-fijo]');
+	const texto = fijo?.querySelector<HTMLElement>('[data-reservar-texto]');
+	const nota = fijo?.querySelector<HTMLElement>('[data-reservar-nota]');
+
+	if (fijo && texto && nota) {
+		const textoBase = texto.textContent ?? '';
+
+		// ── Ocultarse sobre el bloque de reserva y el footer ──
+		const tapaderas = new Set<Element>();
+		const ocultar = new IntersectionObserver((entradas) => {
+			for (const e of entradas) {
+				if (e.isIntersecting) tapaderas.add(e.target);
+				else tapaderas.delete(e.target);
+			}
+			const oculto = tapaderas.size > 0;
+			fijo.toggleAttribute('data-oculto', oculto);
+			// inert: oculto también para el teclado y los lectores de pantalla.
+			fijo.inert = oculto;
+		}, {
+			// Cuenta como "a la vista" cuando entra por encima del botón (~80px),
+			// no cuando apenas toca el borde inferior de la pantalla.
+			rootMargin: '0px 0px -80px 0px',
+		});
+		document.querySelectorAll('[data-oculta-reservar-fijo]').forEach((el) => ocultar.observe(el));
+
+		// ── Texto según la sección que ocupa el centro de la pantalla ──
+		const activas = new Set<HTMLElement>();
+		const aplicar = () => {
+			const seccion = [...activas].at(-1);
+			texto.textContent = seccion?.dataset.espacioReservar ?? textoBase;
+			const n = seccion?.dataset.espacioNota;
+			nota.textContent = n ?? '';
+			nota.hidden = !n;
+		};
+		const contexto = new IntersectionObserver(
+			(entradas) => {
+				for (const e of entradas) {
+					const el = e.target as HTMLElement;
+					if (e.isIntersecting) activas.add(el);
+					else activas.delete(el);
+				}
+				aplicar();
+			},
+			// Solo cuenta la franja central de la pantalla.
+			{ rootMargin: '-45% 0px -45% 0px' },
+		);
+		document.querySelectorAll('[data-espacio-reservar]').forEach((el) => contexto.observe(el));
+	}
+</script>

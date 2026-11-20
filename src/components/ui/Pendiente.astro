@@ -1,0 +1,29 @@
+---
+/**
+ * Marca visible para un dato que todavía no confirma Copal.
+ * Se ve a propósito (borde punteado) para que nadie lo confunda con un dato real.
+ * En el paso 6, el build de producción fallará mientras queden datos PENDIENTE.
+ */
+import type { Lang } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/utils';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<span class="pendiente">{t('pendiente')}</span>
+
+<style>
+	.pendiente {
+		display: inline-block;
+		padding: 0 var(--e-2);
+		border: 1px dashed var(--borde-control);
+		border-radius: var(--radio-control);
+		color: var(--texto-suave);
+		font-size: var(--t-sm);
+	}
+</style>
