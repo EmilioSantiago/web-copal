@@ -20,3 +20,10 @@ Consult these guides before working on related tasks:
 - [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
 - [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
 - [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+
+## Skills de diseño
+
+- landing-page-desing: SOLO para planear secciones, orden, textos y
+  llamados a la acción. Ignora sus reglas de color, tipografía y estilo.
+- frontend-design: autoridad en todo lo visual (estética, tipografía,
+  color, espaciado, componentes). Si hay conflicto, gana esta.
