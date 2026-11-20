@@ -3,7 +3,7 @@
   "skills": {
     "gsap-scrolltrigger": {
       "source": "Bbeierle12/Skill-MCP-Claude",
-      "commit": "d11bbb8a25efbf5a8f8fc7017cde89f7c4e0cf80",
+      "commit": "b0e737834948622ebade14cf10fa431790cb128d",
       "sourceType": "github",
       "skillPath": "skills/gsap-scrolltrigger/SKILL.md",
       "computedHash": "16fa26149cb483306691a5a7a2ed504c87dbb1f4a9184724827b0cf036d1c2c2"
