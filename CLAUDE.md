@@ -15,7 +15,12 @@ proyecto) y con un agente AUDITOR DE SEGURIDAD que corre en otra terminal.
   hallazgos de mayor severidad, explicando cada cambio.
 - Pasos pequeños. Al terminar cada paso: verifica con Playwright (375px
   y 1440px), resume qué hiciste en 3 a 5 líneas y propón el mensaje de
-  commit. No hagas commit ni push sin visto bueno.
+  commit.
+- Commits y push: SIEMPRE propón primero el mensaje exacto y espera el
+  visto bueno explícito de Emilio para ESE commit. Un visto bueno anterior
+  no autoriza commits nuevos. Nunca hagas push sin que lo pida.
+- Capturas y salidas de Playwright: siempre en `.playwright-mcp/`
+  (está en `.gitignore`).
 - Enseña: cuando uses un concepto nuevo, explícalo en 2 o 3 líneas,
   como a un principiante.
 - No inventes datos del restaurante (precios, horarios, teléfonos,
