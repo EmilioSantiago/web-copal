@@ -1,56 +1,28 @@
 ---
 /**
- * Vista del inicio. PROVISIONAL (paso 2): solo comprueba que tokens,
- * fuentes, idioma y layout funcionan. El inicio real se construye en el paso 5.
+ * Vista del inicio (recibe el idioma).
+ * Hero (entrada) → concepto "De la costa a la sierra" → patio con parrilla
+ * → adelantos de cocina, bar y wine bar → reserva.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/secciones/inicio/Hero.astro';
+import Concepto from '../components/secciones/inicio/Concepto.astro';
+import Patio from '../components/secciones/inicio/Patio.astro';
+import Adelantos from '../components/secciones/inicio/Adelantos.astro';
 import ReservaBlock from '../components/reserva/ReservaBlock.astro';
-import { SITE } from '../config/site';
 import type { Lang } from '../i18n/routes';
-import { useTranslations } from '../i18n/utils';
 
 interface Props {
 	lang: Lang;
 }
 
 const { lang } = Astro.props;
-const t = useTranslations(lang);
 ---
 
 <BaseLayout lang={lang} route="inicio">
-	<section class="provisional">
-		<h1>{SITE.name}</h1>
-		<p>{t('inicio.provisional')}</p>
-	</section>
+	<Hero lang={lang} />
+	<Concepto lang={lang} />
+	<Patio lang={lang} />
+	<Adelantos lang={lang} />
 	<ReservaBlock lang={lang} />
 </BaseLayout>
-
-<style>
-	.provisional {
-		position: relative;
-		display: grid;
-		place-content: center;
-		gap: var(--e-5);
-		min-height: 100dvh;
-		padding-inline: var(--margen-lateral);
-		isolation: isolate;
-	}
-
-	/* Un farol encendido detrás del nombre. */
-	.provisional::before {
-		content: '';
-		position: absolute;
-		inset: 10% 15%;
-		z-index: -1;
-		background: var(--resplandor);
-	}
-
-	h1 {
-		font-size: var(--t-2xl);
-		letter-spacing: 0.04em;
-	}
-
-	p {
-		color: var(--texto-suave);
-	}
-</style>

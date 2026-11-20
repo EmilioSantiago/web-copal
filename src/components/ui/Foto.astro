@@ -1,0 +1,41 @@
+---
+/**
+ * Foto del sitio: una sola configuración para todas las imágenes.
+ * - <picture> con AVIF y WebP, en anchos 400 / 800 / 1200.
+ * - El navegador elige el archivo según `sizes` (qué tan ancha se verá).
+ * - Lazy por defecto; `prioridad` solo para el hero (la imagen LCP).
+ * - Respaldo JPG para navegadores muy viejos (un PNG pesaría mucho más).
+ * - `class` va en el <picture> (el que se acomoda en la rejilla); la <img>
+ *   lo llena con object-fit: cover. Para recortar, da aspect-ratio a la clase.
+ */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+	src: ImageMetadata;
+	alt: string;
+	/** Ancho con que se mostrará, ej. "(min-width: 64rem) 50vw, 100vw". */
+	sizes: string;
+	/** Solo para la imagen principal visible al cargar (LCP). */
+	prioridad?: boolean;
+	class?: string;
+}
+
+const { src, alt, sizes, prioridad = false, class: className } = Astro.props;
+
+// No pedimos anchos mayores que el original: no se gana calidad, solo peso.
+const widths = [400, 800, 1200].filter((w) => w <= src.width);
+if (!widths.includes(src.width) && src.width < 1200) widths.push(src.width);
+---
+
+<Picture
+	src={src}
+	alt={alt}
+	formats={['avif', 'webp']}
+	fallbackFormat="jpg"
+	widths={widths}
+	sizes={sizes}
+	priority={prioridad}
+	class="foto-img"
+	pictureAttributes={{ class: ['foto', className].filter(Boolean).join(' ') }}
+/>

@@ -1,0 +1,85 @@
+---
+/**
+ * "De la costa a la sierra": el concepto de Copal.
+ * Foto estrecha y alta a un lado, columna de texto estrecha al otro,
+ * desfasadas en altura (layout editorial asimétrico).
+ */
+import Foto from '../../ui/Foto.astro';
+import humo from '../../../assets/photos/ambiente/copal.webp';
+import type { Lang } from '../../../i18n/routes';
+import { useTranslations } from '../../../i18n/utils';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="concepto" aria-labelledby="concepto-titulo">
+	<div class="concepto-texto">
+		<h2 id="concepto-titulo">{t('inicio.concepto.titulo')}</h2>
+		<p>{t('inicio.concepto.texto1')}</p>
+		<p>{t('inicio.concepto.texto2')}</p>
+	</div>
+	<Foto
+		src={humo}
+		alt={t('inicio.concepto.alt')}
+		sizes="(min-width: 64rem) 34vw, 82vw"
+		class="concepto-foto"
+	/>
+</section>
+
+<style>
+	.concepto {
+		display: grid;
+		gap: var(--e-7);
+		max-width: var(--ancho-max);
+		margin-inline: auto;
+		padding: var(--e-9) var(--margen-lateral);
+	}
+
+	.concepto-texto {
+		display: grid;
+		gap: var(--e-4);
+		max-width: var(--medida-estrecha);
+	}
+
+	h2 {
+		font-size: var(--t-xl);
+		margin-block-end: var(--e-3);
+	}
+
+	.concepto-texto p {
+		font-size: var(--t-md);
+		line-height: 1.45;
+	}
+
+	.concepto :global(.concepto-foto) {
+		width: 82%;
+		justify-self: end;
+		aspect-ratio: 3 / 4;
+	}
+
+	@media (min-width: 64rem) {
+		.concepto {
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+			align-items: center;
+		}
+
+		.concepto :global(.concepto-foto) {
+			grid-column: 2 / span 4;
+			grid-row: 1;
+			width: 100%;
+			justify-self: stretch;
+		}
+
+		.concepto-texto {
+			grid-column: 7 / span 5;
+			grid-row: 1;
+			/* Desfase: el texto baja respecto a la foto. */
+			margin-block-start: var(--e-9);
+		}
+	}
+</style>

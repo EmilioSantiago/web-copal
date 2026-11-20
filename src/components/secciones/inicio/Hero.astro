@@ -1,0 +1,242 @@
+---
+/**
+ * Hero del inicio: la entrada de Copal y su gran lámpara tejida.
+ *
+ * "Se enciende" al cargar, sin afectar el LCP:
+ * - La foto NUNCA empieza invisible. Se pinta desde el primer momento;
+ *   encima hay una capa oscura que se desvanece en ~0.9 s.
+ * - Las 11 elipses de la hoja aparecen como brasas, de abajo hacia arriba.
+ * - Con prefers-reduced-motion no hay animación: se ve el estado final.
+ * Todo es CSS: no espera a ningún JavaScript.
+ */
+import Foto from '../../ui/Foto.astro';
+import ReservarButton from '../../reserva/ReservarButton.astro';
+import Hoja from '../../../assets/logo/hoja-copal.svg';
+import entrada from '../../../assets/photos/entrada/entrada-copal.webp';
+import { SITE } from '../../../config/site';
+import type { Lang } from '../../../i18n/routes';
+import { pathFor, useTranslations } from '../../../i18n/utils';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="hero" aria-labelledby="hero-titulo" data-oculta-reservar-fijo>
+	<div class="hero-foto">
+		<Foto
+			src={entrada}
+			alt={t('inicio.hero.alt')}
+			sizes="(min-width: 64rem) 58vw, 100vw"
+			prioridad
+			class="hero-img"
+		/>
+	</div>
+
+	<div class="hero-texto">
+		<Hoja class="hero-hoja" aria-hidden="true" focusable="false" />
+		<h1 id="hero-titulo" class="hero-nombre">{SITE.name}</h1>
+		<p class="hero-lema">{t('inicio.lema')}</p>
+		<div class="hero-acciones">
+			<ReservarButton lang={lang} />
+			<a class="hero-visitanos" href={pathFor('visitanos', lang)}>{t('nav.visitanos')}</a>
+		</div>
+	</div>
+</section>
+
+<style>
+	.hero {
+		position: relative;
+		display: grid;
+		min-height: 100svh;
+		isolation: isolate;
+	}
+
+	/* ── Foto ── */
+	.hero-foto {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+	}
+
+	/* Absoluta: la foto llena su caja sin empujar la altura del hero. */
+	.hero-foto :global(.hero-img) {
+		position: absolute;
+		inset: 0;
+	}
+
+	.hero-foto :global(.foto-img) {
+		object-position: 50% 40%;
+	}
+
+	/* Velo para leer el texto sobre la foto (celular). */
+	.hero-foto::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			to top,
+			var(--c-noche) 0%,
+			rgb(18 14 11 / 0.82) 38%,
+			rgb(18 14 11 / 0.15) 72%,
+			rgb(18 14 11 / 0.35) 100%
+		);
+	}
+
+	/* Capa del "encendido": empieza oscura, se desvanece. Estado final: invisible. */
+	.hero-foto::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		background-color: var(--c-noche);
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	/* ── Texto ── */
+	.hero-texto {
+		align-self: end;
+		display: grid;
+		justify-items: start;
+		gap: var(--e-4);
+		padding: calc(var(--alto-header) + var(--e-7)) var(--margen-lateral)
+			calc(var(--e-8) + var(--seguro-abajo));
+	}
+
+	.hero-hoja {
+		width: auto;
+		height: clamp(4.5rem, 3.5rem + 4vw, 7.5rem);
+		color: var(--c-farol);
+		/* El resplandor de las brasas. */
+		filter: drop-shadow(0 0 1.25rem rgb(240 128 42 / 0.45));
+	}
+
+	.hero-nombre {
+		font-size: var(--t-2xl);
+		letter-spacing: 0.08em;
+		margin-inline-end: -0.08em;
+	}
+
+	.hero-lema {
+		max-width: 26ch;
+		font-size: var(--t-md);
+		line-height: 1.35;
+		color: var(--texto);
+	}
+
+	.hero-acciones {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--e-4) var(--e-6);
+		margin-block-start: var(--e-4);
+	}
+
+	.hero-visitanos {
+		display: inline-flex;
+		align-items: center;
+		min-height: 2.75rem;
+		color: var(--texto);
+	}
+
+	.hero-visitanos:hover {
+		color: var(--c-farol);
+	}
+
+	/* ── Escritorio: texto a la izquierda, foto a sangre a la derecha ── */
+	@media (min-width: 64rem) {
+		.hero {
+			grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+		}
+
+		.hero-foto {
+			position: relative;
+			grid-column: 2;
+			grid-row: 1;
+			z-index: 0;
+		}
+
+		/* Sin texto encima: solo un borde de sombra que funde la foto con la noche. */
+		.hero-foto::after {
+			background: linear-gradient(to right, var(--c-noche), rgb(18 14 11 / 0) 22%);
+		}
+
+		.hero-texto {
+			grid-column: 1;
+			grid-row: 1;
+			align-self: center;
+			padding-block: calc(var(--alto-header) + var(--e-6)) var(--e-8);
+			/* La luz del farol se derrama sobre el texto. */
+			background: radial-gradient(
+				ellipse 70% 55% at 100% 50%,
+				rgb(240 128 42 / 0.12),
+				transparent 70%
+			);
+		}
+	}
+
+	/* ── Animación: solo si la persona no pidió menos movimiento ── */
+	@media (prefers-reduced-motion: no-preference) {
+		.hero-foto::before {
+			animation: encender 0.9s var(--curva) 0.05s both;
+		}
+
+		.hero-hoja :global(ellipse) {
+			animation: brasa 0.45s ease-out both;
+		}
+
+		/* De abajo (último par) hacia arriba (primera elipse). */
+		.hero-hoja :global(ellipse:nth-child(10)),
+		.hero-hoja :global(ellipse:nth-child(11)) {
+			animation-delay: 0.05s;
+		}
+		.hero-hoja :global(ellipse:nth-child(8)),
+		.hero-hoja :global(ellipse:nth-child(9)) {
+			animation-delay: 0.13s;
+		}
+		.hero-hoja :global(ellipse:nth-child(6)),
+		.hero-hoja :global(ellipse:nth-child(7)) {
+			animation-delay: 0.21s;
+		}
+		.hero-hoja :global(ellipse:nth-child(4)),
+		.hero-hoja :global(ellipse:nth-child(5)) {
+			animation-delay: 0.29s;
+		}
+		.hero-hoja :global(ellipse:nth-child(2)),
+		.hero-hoja :global(ellipse:nth-child(3)) {
+			animation-delay: 0.37s;
+		}
+		.hero-hoja :global(ellipse:nth-child(1)) {
+			animation-delay: 0.45s;
+		}
+	}
+
+	@keyframes encender {
+		from {
+			opacity: 0.68;
+		}
+		to {
+			opacity: 0;
+		}
+	}
+
+	/* Una brasa: casi apagada, se aviva en amarillo y se asienta en naranja. */
+	@keyframes brasa {
+		0% {
+			opacity: 0.12;
+			fill: var(--c-barro);
+		}
+		60% {
+			opacity: 1;
+			fill: var(--c-cempasuchil);
+		}
+		100% {
+			opacity: 1;
+			fill: var(--c-farol);
+		}
+	}
+</style>

@@ -1,0 +1,119 @@
+---
+/**
+ * El patio con la parrilla de leña. No hay terraza aparte: el patio ES
+ * el espacio exterior, y ahí está la parrilla.
+ * En celular, mientras esta sección está al centro de la pantalla, el botón
+ * fijo dice "Reservar en el patio" y muestra la nota.
+ */
+import Foto from '../../ui/Foto.astro';
+import patio from '../../../assets/photos/patio/espacios/restaurante-copal.webp';
+import parrillero from '../../../assets/photos/cocina/espacios/parrillero-parrilla-lena.webp';
+import type { Lang } from '../../../i18n/routes';
+import { useTranslations } from '../../../i18n/utils';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section
+	class="patio"
+	aria-labelledby="patio-titulo"
+	data-espacio-reservar={t('reservar.patio')}
+	data-espacio-nota={t('reservar.notaEspacio')}
+>
+	<Foto
+		src={patio}
+		alt={t('inicio.patio.alt')}
+		sizes="(min-width: 64rem) 58vw, 100vw"
+		class="patio-foto"
+	/>
+
+	<div class="patio-texto">
+		<h2 id="patio-titulo">{t('inicio.patio.titulo')}</h2>
+		<p>{t('inicio.patio.texto')}</p>
+	</div>
+
+	<Foto
+		src={parrillero}
+		alt={t('inicio.parrilla.alt')}
+		sizes="(min-width: 64rem) 28vw, 70vw"
+		class="patio-parrilla"
+	/>
+</section>
+
+<style>
+	.patio {
+		display: grid;
+		gap: var(--e-6);
+		padding-block: var(--e-9);
+		background-color: var(--superficie);
+		/* La luz cálida del patio, desde abajo a la izquierda. */
+		background-image: radial-gradient(
+			ellipse 60% 50% at 10% 90%,
+			rgb(240 128 42 / 0.1),
+			transparent 70%
+		);
+	}
+
+	.patio :global(.patio-foto) {
+		width: 100%;
+		aspect-ratio: 4 / 5;
+	}
+
+	.patio-texto {
+		display: grid;
+		gap: var(--e-4);
+		padding-inline: var(--margen-lateral);
+		max-width: calc(var(--medida-estrecha) + 2 * var(--margen-lateral));
+	}
+
+	h2 {
+		font-size: var(--t-xl);
+	}
+
+	.patio :global(.patio-parrilla) {
+		width: 70%;
+		justify-self: end;
+		margin-inline-end: var(--margen-lateral);
+		aspect-ratio: 3 / 4;
+	}
+
+	/* Escritorio: foto grande a sangre por la izquierda; texto y parrilla a la derecha. */
+	@media (min-width: 64rem) {
+		.patio {
+			grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+			grid-template-rows: auto 1fr;
+			column-gap: var(--e-8);
+			row-gap: var(--e-7);
+			padding-inline-end: var(--margen-lateral);
+		}
+
+		.patio :global(.patio-foto) {
+			grid-column: 1;
+			grid-row: 1 / span 2;
+			height: 100%;
+			aspect-ratio: auto;
+			min-height: 44rem;
+		}
+
+		.patio-texto {
+			grid-column: 2;
+			grid-row: 1;
+			padding-inline: 0;
+			padding-block-start: var(--e-7);
+		}
+
+		.patio :global(.patio-parrilla) {
+			grid-column: 2;
+			grid-row: 2;
+			align-self: end;
+			justify-self: start;
+			width: 78%;
+			margin-inline-end: 0;
+		}
+	}
+</style>

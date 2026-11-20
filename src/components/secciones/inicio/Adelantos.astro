@@ -1,0 +1,178 @@
+---
+/**
+ * Adelantos de Cocina, Bar y Wine bar.
+ * No son tarjetas idénticas: tres tamaños y alturas distintas en zigzag.
+ */
+import Foto from '../../ui/Foto.astro';
+import cocina from '../../../assets/photos/cocina/platillos/fuertes/pesca.webp';
+import bar from '../../../assets/photos/bar/bebidas/chintextle.webp';
+import wineBar from '../../../assets/photos/wine-bar/espacios/wine-espacio-1.webp';
+import type { ImageMetadata } from 'astro';
+import type { Lang, RouteKey } from '../../../i18n/routes';
+import { pathFor, useTranslations, type UIKey } from '../../../i18n/utils';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const areas: {
+	route: RouteKey;
+	titulo: UIKey;
+	texto: UIKey;
+	alt: UIKey;
+	foto: ImageMetadata;
+	sizes: string;
+}[] = [
+	{
+		route: 'cocina',
+		titulo: 'nav.cocina',
+		texto: 'inicio.cocina.texto',
+		alt: 'inicio.cocina.alt',
+		foto: cocina,
+		sizes: '(min-width: 64rem) 46vw, 100vw',
+	},
+	{
+		route: 'bar',
+		titulo: 'nav.bar',
+		texto: 'inicio.bar.texto',
+		alt: 'inicio.bar.alt',
+		foto: bar,
+		sizes: '(min-width: 64rem) 34vw, 80vw',
+	},
+	{
+		route: 'wineBar',
+		titulo: 'nav.wineBar',
+		texto: 'inicio.wineBar.texto',
+		alt: 'inicio.wineBar.alt',
+		foto: wineBar,
+		sizes: '(min-width: 64rem) 40vw, 90vw',
+	},
+];
+---
+
+<section class="adelantos" aria-labelledby="adelantos-titulo">
+	<h2 id="adelantos-titulo" class="sr-only">{t('inicio.adelantos.titulo')}</h2>
+	{
+		areas.map((a) => (
+			<article class={`area area-${a.route}`}>
+				<Foto src={a.foto} alt={t(a.alt)} sizes={a.sizes} class="area-foto" />
+				<div class="area-texto">
+					<h3>
+						<a href={pathFor(a.route, lang)}>{t(a.titulo)}</a>
+					</h3>
+					<p>{t(a.texto)}</p>
+				</div>
+			</article>
+		))
+	}
+</section>
+
+<style>
+	.adelantos {
+		display: grid;
+		gap: var(--e-9);
+		max-width: var(--ancho-max);
+		margin-inline: auto;
+		padding: var(--e-9) var(--margen-lateral);
+	}
+
+	.area {
+		display: grid;
+		gap: var(--e-5);
+	}
+
+	.area :global(.area-foto) {
+		width: 100%;
+		aspect-ratio: 4 / 5;
+	}
+
+	/* En celular también varían: no tres bloques iguales. */
+	.area-bar {
+		width: 80%;
+		justify-self: end;
+	}
+
+	.area-wineBar {
+		width: 90%;
+	}
+
+	.area-texto {
+		display: grid;
+		gap: var(--e-2);
+		max-width: var(--medida-estrecha);
+	}
+
+	h3 {
+		font-size: var(--t-lg);
+	}
+
+	h3 a {
+		color: var(--texto);
+		text-decoration: none;
+		background-image: linear-gradient(var(--c-farol), var(--c-farol));
+		background-size: 0 2px;
+		background-position: 0 100%;
+		background-repeat: no-repeat;
+		transition:
+			color var(--duracion) var(--curva),
+			background-size var(--duracion) var(--curva);
+	}
+
+	h3 a:hover {
+		color: var(--c-farol);
+		background-size: 100% 2px;
+	}
+
+	/* Toda la pieza responde al cursor; el enlace real sigue siendo el título. */
+	.area :global(.area-foto img) {
+		transition: filter var(--duracion) var(--curva);
+	}
+
+	.area:has(h3 a:hover) :global(.area-foto img) {
+		filter: brightness(1.12) saturate(1.05);
+	}
+
+	.area-texto p {
+		color: var(--texto-suave);
+	}
+
+	@media (min-width: 64rem) {
+		/* Zigzag: Cocina grande a la izquierda; Bar y Wine bar bajan por la
+		   derecha con distinto ancho y sangría. */
+		.adelantos {
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+			align-items: start;
+			row-gap: var(--e-8);
+			column-gap: var(--e-6);
+		}
+
+		.area-cocina {
+			grid-column: 1 / span 6;
+			grid-row: 1 / span 2;
+		}
+
+		.area-bar {
+			grid-column: 8 / span 4;
+			grid-row: 1;
+			width: auto;
+			margin-block-start: var(--e-9);
+		}
+
+		.area-wineBar {
+			grid-column: 7 / span 5;
+			grid-row: 2;
+			width: auto;
+		}
+
+		.area-bar :global(.area-foto) {
+			aspect-ratio: 3 / 4;
+		}
+
+		.area-wineBar :global(.area-foto) {
+			aspect-ratio: 5 / 6;
+		}
+	}
+</style>
