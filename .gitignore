@@ -1,15 +1,61 @@
-
+# ── Dependencias y archivos generados ──
 node_modules/
 dist/
 .astro/
+.vercel/
+.output/
+*.tsbuildinfo
+.cache/
+.eslintcache
+coverage/
+
+# ── Secretos: variables de entorno ──
 .env
 .env.*
 !.env.example
+
+# ── Secretos: llaves, certificados y credenciales ──
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+id_rsa*
+id_ed25519*
+credentials*.json
+service-account*.json
+secrets/
+.npmrc
+
+# ── Claude Code y MCP (config local) ──
+.claude/settings.local.json
+.claude/skills/
+.agents/
+CLAUDE.local.md
+.mcp.json
+.playwright-mcp/
+
+# ── Pruebas ──
+test-results/
+playwright-report/
+
+# ── Logs ──
 *.log
 npm-debug.log*
-.agents/
-.claude/skills/
-.claude/settings.local.json
-Thumbs.db
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── Editor ──
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+.idea/
+*.swp
+
+# ── Sistema operativo ──
 .DS_Store
-.vercel/
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
