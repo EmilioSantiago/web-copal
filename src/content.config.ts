@@ -39,6 +39,8 @@ const platillos = defineCollection({
 			tiempo: z.enum(['entradas', 'ensaladas', 'fuertes', 'postres']),
 			nombre: bilingue,
 			descripcion: bilingue,
+			/** Precio en pesos (MXN). Opcional: si no está, la página no lo muestra. */
+			precio: z.union([z.number().positive(), PENDIENTE]).optional(),
 			foto: z.object({ src: image(), alt: bilingue }).optional(),
 			orden: z.number().int().default(0),
 			pendiente,

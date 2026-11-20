@@ -1,4 +1,5 @@
 # Platillos por tiempo. NO cargar nombres ni descripciones hasta que Copal los confirme.
+# precio (opcional, en MXN): si se omite, no se muestra. Ej.: precio: 280
 # Las fotos son reales; el alt describe lo que se ve, sin nombrar el platillo.
 - id: entrada-1
   tiempo: entradas
