@@ -1,0 +1,434 @@
+---
+/**
+ * Header: marca, navegación, selector de idioma y botón Reservar.
+ * - Se oculta al bajar y reaparece al subir (nunca si el foco está dentro).
+ * - La página actual lleva aria-current="page" y una línea naranja.
+ * - En celular, el menú es un <dialog> abierto con showModal().
+ */
+import Logo from '../ui/Logo.astro';
+import ReservarButton from '../reserva/ReservarButton.astro';
+import { languages, langs, type Lang, type RouteKey } from '../../i18n/routes';
+import { pathFor, useTranslations, type UIKey } from '../../i18n/utils';
+
+interface Props {
+	lang: Lang;
+	route: RouteKey;
+}
+
+const { lang, route } = Astro.props;
+const t = useTranslations(lang);
+
+const enlaces: { route: RouteKey; label: UIKey }[] = [
+	{ route: 'cocina', label: 'nav.cocina' },
+	{ route: 'bar', label: 'nav.bar' },
+	{ route: 'wineBar', label: 'nav.wineBar' },
+	{ route: 'eventos', label: 'nav.eventos' },
+];
+
+// La MISMA página en el otro idioma.
+const otroIdioma = langs.find((l) => l !== lang)!;
+const idioma = {
+	lang: otroIdioma,
+	href: pathFor(route, otroIdioma),
+	label: languages[otroIdioma],
+};
+
+const current = (r: RouteKey) => (r === route ? 'page' : undefined);
+---
+
+<header class="header" data-header>
+	<div class="header-fila">
+		<a
+			class="marca"
+			href={pathFor('inicio', lang)}
+			aria-label={t('marca.inicio')}
+			aria-current={current('inicio')}
+		>
+			<Logo />
+		</a>
+
+		<nav class="nav-escritorio" aria-label={t('nav.principal')}>
+			<ul role="list">
+				{
+					enlaces.map((e) => (
+						<li>
+							<a class="nav-enlace" href={pathFor(e.route, lang)} aria-current={current(e.route)}>
+								{t(e.label)}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<div class="acciones">
+			<a class="idioma" href={idioma.href} hreflang={idioma.lang} lang={idioma.lang}>
+				{idioma.label}
+			</a>
+			<ReservarButton lang={lang} />
+		</div>
+
+		<button
+			class="menu-boton"
+			type="button"
+			aria-haspopup="dialog"
+			aria-expanded="false"
+			aria-controls="menu-movil"
+			data-menu-abrir
+		>
+			{t('nav.menu')}
+		</button>
+	</div>
+</header>
+
+<dialog class="menu-movil" id="menu-movil" aria-label={t('nav.menu')} data-menu>
+	<div class="menu-cabecera">
+		<a
+			class="marca"
+			href={pathFor('inicio', lang)}
+			aria-label={t('marca.inicio')}
+			aria-current={current('inicio')}
+		>
+			<Logo />
+		</a>
+		<button class="menu-boton menu-cerrar" type="button" autofocus data-menu-cerrar>
+			{t('nav.cerrar')}
+		</button>
+	</div>
+
+	<nav class="menu-nav" aria-label={t('nav.principal')}>
+		<ul class="menu-lista" role="list">
+			{
+				enlaces.map((e) => (
+					<li>
+						<a class="menu-enlace" href={pathFor(e.route, lang)} aria-current={current(e.route)}>
+							{t(e.label)}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+
+	<div class="menu-pie">
+		<a class="idioma" href={idioma.href} hreflang={idioma.lang} lang={idioma.lang}>
+			{idioma.label}
+		</a>
+		<ReservarButton lang={lang} class="menu-reservar" />
+	</div>
+</dialog>
+
+<style>
+	/* ── Barra ── */
+	.header {
+		position: fixed;
+		inset-block-start: 0;
+		inset-inline: 0;
+		z-index: 50;
+		transition:
+			transform var(--duracion) var(--curva),
+			background-color var(--duracion) var(--curva);
+	}
+
+	/* Arriba del todo: una sombra cálida que se desvanece, sin caja. */
+	.header::before {
+		content: '';
+		position: absolute;
+		inset: 0 0 -1.5rem;
+		z-index: -1;
+		background: linear-gradient(rgb(18 14 11 / 0.8), rgb(18 14 11 / 0));
+		pointer-events: none;
+		transition: opacity var(--duracion) var(--curva);
+	}
+
+	/* Al bajar un poco: fondo noche casi opaco y una veta abajo. */
+	.header[data-solido] {
+		background-color: rgb(18 14 11 / 0.94);
+		box-shadow: 0 1px 0 var(--linea);
+	}
+
+	.header[data-solido]::before {
+		opacity: 0;
+	}
+
+	.header[data-oculto] {
+		transform: translateY(-100%);
+	}
+
+	.header-fila {
+		display: flex;
+		align-items: center;
+		gap: var(--e-6);
+		max-width: var(--ancho-max);
+		min-height: var(--alto-header);
+		margin-inline: auto;
+		padding-inline: var(--margen-lateral);
+	}
+
+	/* ── Marca ── */
+	.marca {
+		display: inline-flex;
+		align-items: center;
+		min-height: 2.75rem;
+		color: var(--texto);
+		font-size: var(--t-md);
+		text-decoration: none;
+		transition: color var(--duracion) var(--curva);
+	}
+
+	.marca:hover {
+		color: var(--c-farol);
+	}
+
+	/* ── Navegación de escritorio ── */
+	.nav-escritorio {
+		display: none;
+		margin-inline-start: auto;
+	}
+
+	.nav-escritorio ul {
+		display: flex;
+		gap: var(--e-6);
+		padding: 0;
+		list-style: none;
+	}
+
+	.nav-enlace {
+		position: relative;
+		display: inline-block;
+		padding-block: var(--e-3);
+		color: var(--texto);
+		text-decoration: none;
+		transition: color var(--duracion) var(--curva);
+	}
+
+	/* La línea naranja: llena en la página actual, insinuada al pasar el cursor. */
+	.nav-enlace::after {
+		content: '';
+		position: absolute;
+		inset-inline: 0;
+		inset-block-end: 0.35rem;
+		height: 2px;
+		background-color: var(--c-farol);
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform var(--duracion) var(--curva);
+	}
+
+	.nav-enlace:hover {
+		color: var(--c-farol);
+	}
+
+	.nav-enlace:hover::after {
+		transform: scaleX(0.35);
+	}
+
+	.nav-enlace[aria-current='page']::after {
+		transform: scaleX(1);
+	}
+
+	/* ── Idioma y Reservar ── */
+	.acciones {
+		display: none;
+		align-items: center;
+		gap: var(--e-5);
+	}
+
+	.idioma {
+		display: inline-flex;
+		align-items: center;
+		min-height: 2.75rem;
+		color: var(--texto-suave);
+		font-size: var(--t-sm);
+		text-decoration: none;
+	}
+
+	.idioma:hover {
+		color: var(--c-farol);
+		text-decoration: underline;
+	}
+
+	/* ── Botón Menú (celular) ── */
+	.menu-boton {
+		margin-inline-start: auto;
+		min-height: 2.75rem;
+		padding-inline: var(--e-4);
+		background: transparent;
+		border: 1px solid var(--borde-control);
+		border-radius: var(--radio-control);
+		cursor: pointer;
+	}
+
+	.menu-boton:hover {
+		border-color: var(--c-farol);
+		color: var(--c-farol);
+	}
+
+	@media (min-width: 64rem) {
+		.nav-escritorio,
+		.acciones {
+			display: flex;
+		}
+
+		.menu-boton:not(.menu-cerrar) {
+			display: none;
+		}
+	}
+
+	/* ── Menú móvil (<dialog>) ── */
+	.menu-movil {
+		width: 100%;
+		max-width: none;
+		height: 100dvh;
+		max-height: none;
+		margin: 0;
+		padding: 0 var(--margen-lateral) calc(var(--e-6) + var(--seguro-abajo));
+		border: 0;
+		background-color: var(--fondo);
+		background-image: radial-gradient(
+			ellipse 90% 60% at 0% 100%,
+			rgb(240 128 42 / 0.16),
+			transparent 70%
+		);
+		color: var(--texto);
+	}
+
+	.menu-movil[open] {
+		display: flex;
+		flex-direction: column;
+		animation: menu-entra var(--duracion) var(--curva);
+	}
+
+	.menu-movil::backdrop {
+		background: var(--fondo);
+	}
+
+	@keyframes menu-entra {
+		from {
+			opacity: 0;
+		}
+	}
+
+	.menu-cabecera {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		min-height: var(--alto-header);
+	}
+
+	/* margin-block-end: auto empuja el pie al fondo de la pantalla. */
+	.menu-nav {
+		margin-block: var(--e-7) auto;
+	}
+
+	.menu-lista {
+		display: grid;
+		gap: var(--e-2);
+		padding: 0;
+		list-style: none;
+	}
+
+	.menu-enlace {
+		display: inline-block;
+		padding-block: var(--e-2);
+		color: var(--texto);
+		font-family: var(--fuente-titulos);
+		font-size: var(--t-xl);
+		line-height: 1.1;
+		text-decoration: none;
+		border-block-end: 2px solid transparent;
+	}
+
+	.menu-enlace:hover {
+		color: var(--c-farol);
+	}
+
+	.menu-enlace[aria-current='page'] {
+		border-block-end-color: var(--c-farol);
+	}
+
+	.menu-pie {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--e-5);
+		padding-block-start: var(--e-6);
+		border-block-start: 1px solid var(--linea);
+	}
+
+	.menu-pie :global(.menu-reservar) {
+		flex: 1;
+		max-width: 16rem;
+	}
+
+	/* Mientras el menú está abierto, la página de atrás no se desplaza. */
+	:global(html:has(.menu-movil[open])) {
+		overflow: hidden;
+	}
+</style>
+
+<script>
+	// ── Ocultar al bajar, mostrar al subir ──
+	const header = document.querySelector<HTMLElement>('[data-header]');
+
+	if (header) {
+		let ultimaY = window.scrollY;
+		let programado = false;
+		const UMBRAL = 6; // px: ignora temblores pequeños del scroll
+
+		const actualizar = () => {
+			programado = false;
+			const y = window.scrollY;
+			header.toggleAttribute('data-solido', y > 8);
+
+			const delta = y - ultimaY;
+			if (Math.abs(delta) < UMBRAL) return;
+
+			const focoDentro = header.contains(document.activeElement);
+			const bajando = delta > 0;
+			header.toggleAttribute('data-oculto', bajando && y > header.offsetHeight && !focoDentro);
+			ultimaY = y;
+		};
+
+		window.addEventListener(
+			'scroll',
+			() => {
+				if (!programado) {
+					programado = true;
+					requestAnimationFrame(actualizar);
+				}
+			},
+			{ passive: true },
+		);
+
+		// Si alguien navega con Tab hacia el header, reaparece.
+		header.addEventListener('focusin', () => header.removeAttribute('data-oculto'));
+		actualizar();
+	}
+
+	// ── Menú móvil ──
+	const menu = document.querySelector<HTMLDialogElement>('[data-menu]');
+	const abrir = document.querySelector<HTMLButtonElement>('[data-menu-abrir]');
+	const cerrar = document.querySelector<HTMLButtonElement>('[data-menu-cerrar]');
+
+	if (menu && abrir && cerrar) {
+		abrir.addEventListener('click', () => {
+			menu.showModal();
+			abrir.setAttribute('aria-expanded', 'true');
+		});
+
+		cerrar.addEventListener('click', () => menu.close());
+
+		// Cerrar con el botón o con Esc dispara 'close'. Devolvemos el foco
+		// al botón Menú para que el teclado no "se pierda" en la página.
+		menu.addEventListener('close', () => {
+			abrir.setAttribute('aria-expanded', 'false');
+			abrir.focus();
+		});
+
+		// Si la pantalla crece a escritorio con el menú abierto, ciérralo.
+		window.matchMedia('(min-width: 64rem)').addEventListener('change', (e) => {
+			if (e.matches && menu.open) menu.close();
+		});
+	}
+</script>

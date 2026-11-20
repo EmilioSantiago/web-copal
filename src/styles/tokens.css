@@ -82,6 +82,7 @@
 	--e-9: clamp(4.5rem, 3rem + 6vw, 9rem); /* entre secciones */
 	--margen-lateral: clamp(1.25rem, 0.6rem + 3vw, 4rem);
 	--ancho-max: 90rem;
+	--alto-header: 4.5rem;
 
 	/* ── Forma y movimiento ── */
 	--radio-control: 2px;

@@ -1,6 +1,7 @@
 ---
 import { Font } from 'astro:assets';
 import '../styles/global.css';
+import Header from '../components/layout/Header.astro';
 import { SITE } from '../config/site';
 import { defaultLang, type Lang, type RouteKey } from '../i18n/routes';
 import { alternatesFor, pathFor, useTranslations } from '../i18n/utils';
@@ -55,7 +56,7 @@ const xDefault = new URL(pathFor(route, defaultLang), Astro.site).href;
 	</head>
 	<body>
 		<a class="saltar" href="#contenido">{t('a11y.saltarContenido')}</a>
-		<slot name="header" />
+		<Header lang={lang} route={route} />
 		<main id="contenido" tabindex="-1">
 			<slot />
 		</main>

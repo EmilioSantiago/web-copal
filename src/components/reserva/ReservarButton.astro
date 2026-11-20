@@ -1,0 +1,58 @@
+---
+/**
+ * Botón "Reservar". Todos los botones del sitio leen SITE.openTableUrl.
+ * Abre en pestaña nueva; rel="noopener noreferrer" impide que OpenTable
+ * controle nuestra pestaña y que reciba de qué página venía la visita.
+ * El texto oculto avisa a los lectores de pantalla que se abre otro sitio.
+ */
+import { SITE } from '../../config/site';
+import type { Lang } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/utils';
+
+interface Props {
+	lang: Lang;
+	class?: string;
+}
+
+const { lang, class: className } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<a
+	class:list={['reservar', className]}
+	href={SITE.openTableUrl}
+	target="_blank"
+	rel="noopener noreferrer"
+>
+	{t('reservar.boton')}<span class="sr-only"> {t('reservar.nuevaPestana')}</span>
+</a>
+
+<style>
+	.reservar {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 2.75rem;
+		padding-inline: var(--e-5);
+		background-color: var(--acento);
+		color: var(--acento-texto);
+		font-weight: 600;
+		text-decoration: none;
+		white-space: nowrap;
+		border-radius: var(--radio-control);
+		/* Un farol encendido: el resplandor crece al pasar el cursor. */
+		box-shadow: 0 0 0 0 rgb(240 128 42 / 0);
+		transition:
+			background-color var(--duracion) var(--curva),
+			box-shadow var(--duracion) var(--curva);
+	}
+
+	.reservar:hover {
+		background-color: var(--c-ambar);
+		box-shadow: 0 0 1.75rem 0.25rem rgb(240 128 42 / 0.35);
+	}
+
+	.reservar:focus-visible {
+		outline-color: var(--texto);
+	}
+</style>

@@ -13,6 +13,8 @@
 
 html {
 	color-scheme: dark;
+	/* Los saltos a #anclas no quedan tapados por el header fijo. */
+	scroll-padding-top: var(--alto-header);
 	-webkit-text-size-adjust: 100%;
 	text-size-adjust: 100%;
 }

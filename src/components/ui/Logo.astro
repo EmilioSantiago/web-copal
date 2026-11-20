@@ -1,0 +1,42 @@
+---
+/**
+ * Marca de Copal: la hoja (11 elipses del logo original, sin redibujar)
+ * + "COPAL" en la tipografía de títulos, mientras llega el logotipo con letras.
+ * La hoja usa currentColor: toma el color del texto que la rodea.
+ * Cada elipse es un <ellipse> independiente para poder animarla después.
+ */
+import Hoja from '../../assets/logo/hoja-copal.svg';
+
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<span class:list={['logo', className]}>
+	<Hoja class="logo-hoja" aria-hidden="true" focusable="false" />
+	<span class="logo-nombre">COPAL</span>
+</span>
+
+<style>
+	.logo {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.6em;
+		line-height: 1;
+	}
+
+	.logo-hoja {
+		width: auto;
+		height: 1.6em;
+		flex: none;
+	}
+
+	.logo-nombre {
+		font-family: var(--fuente-titulos);
+		letter-spacing: 0.12em;
+		/* Compensa el espacio extra que deja letter-spacing tras la última letra. */
+		margin-inline-end: -0.12em;
+	}
+</style>
