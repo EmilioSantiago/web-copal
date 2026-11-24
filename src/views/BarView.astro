@@ -1,0 +1,22 @@
+---
+/**
+ * Página Bar (recibe el idioma).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CabeceraPagina from '../components/secciones/CabeceraPagina.astro';
+import ReservaBlock from '../components/reserva/ReservaBlock.astro';
+import type { Lang } from '../i18n/routes';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<BaseLayout lang={lang} route="bar" title={t('bar.titulo')} description={t('bar.meta')}>
+	<CabeceraPagina titulo={t('bar.titulo')} entrada={t('bar.lead')} voz="voz-bar" />
+	<ReservaBlock lang={lang} />
+</BaseLayout>

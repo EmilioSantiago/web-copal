@@ -22,7 +22,7 @@ const t = useTranslations(lang);
 		<p>{t('reserva.texto')}</p>
 		<div class="reserva-acciones">
 			<ReservarButton lang={lang} />
-			<a class="reserva-visitanos" href={pathFor('visitanos', lang)}>{t('reserva.visitanos')}</a>
+			<a class="reserva-contacto" href={pathFor('contacto', lang)}>{t('reserva.contacto')}</a>
 		</div>
 	</div>
 </section>
@@ -72,14 +72,14 @@ const t = useTranslations(lang);
 	}
 
 	/* Sobre barro, el texto crema contrasta mejor que el naranja (9.76 vs 4.58). */
-	.reserva-visitanos {
+	.reserva-contacto {
 		display: inline-flex;
 		align-items: center;
 		min-height: 2.75rem;
 		color: var(--texto);
 	}
 
-	.reserva-visitanos:hover {
+	.reserva-contacto:hover {
 		color: var(--c-cempasuchil);
 	}
 </style>

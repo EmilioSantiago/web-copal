@@ -18,8 +18,7 @@ export const routes = {
 	cocina: { es: '/es/cocina', en: '/en/kitchen' },
 	bar: { es: '/es/bar', en: '/en/bar' },
 	wineBar: { es: '/es/wine-bar', en: '/en/wine-bar' },
-	eventos: { es: '/es/eventos-privados', en: '/en/private-events' },
-	visitanos: { es: '/es/visitanos', en: '/en/visit' },
+	contacto: { es: '/es/contacto', en: '/en/contact' },
 } as const satisfies Record<string, Record<Lang, string>>;
 
 export type RouteKey = keyof typeof routes;

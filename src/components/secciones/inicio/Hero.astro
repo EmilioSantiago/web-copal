@@ -47,7 +47,7 @@ const t = useTranslations(lang);
 		<p class="hero-lema italica">{t('inicio.lema')}</p>
 		<div class="hero-acciones">
 			<ReservarButton lang={lang} />
-			<a class="hero-visitanos" href={pathFor('visitanos', lang)}>{t('nav.visitanos')}</a>
+			<a class="hero-secundario" href={pathFor('contacto', lang)}>{t('nav.contacto')}</a>
 		</div>
 	</div>
 </section>
@@ -136,14 +136,14 @@ const t = useTranslations(lang);
 		margin-block-start: var(--e-4);
 	}
 
-	.hero-visitanos {
+	.hero-secundario {
 		display: inline-flex;
 		align-items: center;
 		min-height: 2.75rem;
 		color: var(--texto);
 	}
 
-	.hero-visitanos:hover {
+	.hero-secundario:hover {
 		color: var(--c-farol);
 	}
 

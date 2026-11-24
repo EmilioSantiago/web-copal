@@ -1,0 +1,22 @@
+---
+/**
+ * Página WineBar (recibe el idioma).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CabeceraPagina from '../components/secciones/CabeceraPagina.astro';
+import ReservaBlock from '../components/reserva/ReservaBlock.astro';
+import type { Lang } from '../i18n/routes';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<BaseLayout lang={lang} route="wineBar" title={t('wineBar.titulo')} description={t('wineBar.meta')}>
+	<CabeceraPagina titulo={t('wineBar.titulo')} entrada={t('wineBar.lead')} voz="voz-wine" />
+	<ReservaBlock lang={lang} />
+</BaseLayout>

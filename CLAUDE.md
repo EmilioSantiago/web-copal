@@ -31,6 +31,21 @@ proyecto) y con un agente AUDITOR DE SEGURIDAD que corre en otra terminal.
   externos, y avisa de cualquier script de terceros.
 - Si algo que se pide choca con la seguridad o la accesibilidad, dilo.
 
+## Tipografía (aprobada en el rediseño)
+
+Máximo 4 familias, servidas desde nuestro dominio con la API de fuentes
+de Astro (`astro.config.mjs`), recortadas a los pesos y ejes que se usan:
+
+- Texto: **Instrument Sans** (`--font-texto`, 400–600).
+- Marca y Home: **Newsreader** 400, opsz 72 (`--font-titulos`).
+- Wine bar: **Newsreader** itálica 300 (misma familia que la marca).
+- Cocina: **Ultra** 400 (`--font-cocina`).
+- Bar: **Big Shoulders** 800, opsz 72 (`--font-bar`).
+
+Clases de voz en `global.css`: `.voz-marca`, `.italica`, `.voz-cocina`,
+`.voz-bar`, `.voz-wine`. Gloock y Hanken Grotesk ya no se usan.
+Cualquier familia nueva requiere aprobación de Emilio.
+
 ## Herramientas
 
 `/frontend-design` para todo lo visual, `/gsap-scrolltrigger` para
