@@ -16,9 +16,11 @@ interface Props {
 	/** Título propio de la página. En el inicio se omite y queda solo "COPAL". */
 	title?: string;
 	description?: string;
+	/** Páginas que los buscadores no deben indexar. */
+	noindex?: boolean;
 }
 
-const { lang, route, title, description } = Astro.props;
+const { lang, route, title, description, noindex = false } = Astro.props;
 
 // En build de producción falla si quedan datos PENDIENTE; en dev solo avisa.
 await verificarPendientes();
@@ -42,6 +44,7 @@ const xDefault = new URL(pathFor(route, defaultLang), Astro.site).href;
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 		<title>{pageTitle}</title>
 		<meta name="description" content={pageDescription} />
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
 		<link rel="canonical" href={canonical.href} />
 		{alternates.map((alt) => <link rel="alternate" hreflang={alt.lang} href={alt.href} />)}
 		<link rel="alternate" hreflang="x-default" href={xDefault} />
@@ -56,11 +59,17 @@ const xDefault = new URL(pathFor(route, defaultLang), Astro.site).href;
 		<meta property="og:url" content={canonical.href} />
 		<meta property="og:locale" content={lang === 'es' ? 'es_MX' : 'en_US'} />
 
+		<!-- Solo texto y títulos se precargan; las voces de área llegan cuando se usan. -->
 		<Font cssVariable="--font-titulos" preload />
 		<Font cssVariable="--font-texto" preload />
+		<Font cssVariable="--font-cocina" />
+		<Font cssVariable="--font-bar" />
 		<slot name="head" />
 	</head>
 	<body>
+		<!-- Atmósfera: luz de farol que respira y grano de película (decorativas). -->
+		<div class="farol-respira" aria-hidden="true"></div>
+		<div class="grano" aria-hidden="true"></div>
 		<a class="saltar" href="#contenido">{t('a11y.saltarContenido')}</a>
 		<Header lang={lang} route={route} />
 		<main id="contenido" tabindex="-1">

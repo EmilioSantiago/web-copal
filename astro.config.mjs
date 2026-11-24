@@ -25,24 +25,61 @@ export default defineConfig({
 
 	// Las fuentes se descargan al compilar y se sirven desde nuestro dominio:
 	// el navegador del visitante nunca contacta a Google.
+	// Rediseño «mezcla»: 4 familias, recortadas a lo que se usa
+	// (pesos, estilos y ejes) para que pesen lo menos posible.
 	fonts: [
+		// Texto de todo el sitio: párrafos, menú, botones, formularios.
 		{
 			provider: fontProviders.google(),
-			name: 'Gloock',
+			name: 'Instrument Sans',
+			cssVariable: '--font-texto',
+			weights: ['400 600'],
+			styles: ['normal'],
+			subsets: ['latin'],
+			fallbacks: ['system-ui', 'sans-serif'],
+		},
+		// Marca y títulos: Newsreader romana (400) en tamaño óptico de display.
+		{
+			provider: fontProviders.google(),
+			name: 'Newsreader',
 			cssVariable: '--font-titulos',
 			weights: [400],
 			styles: ['normal'],
 			subsets: ['latin'],
 			fallbacks: ['Georgia', 'serif'],
+			options: { experimental: { variableAxis: { opsz: ['72'] } } },
 		},
+		// …y su itálica fina (lemas, citas y la voz del Wine bar).
 		{
 			provider: fontProviders.google(),
-			name: 'Hanken Grotesk',
-			cssVariable: '--font-texto',
-			weights: ['100 900'],
+			name: 'Newsreader',
+			cssVariable: '--font-titulos',
+			weights: [300],
+			styles: ['italic'],
+			subsets: ['latin'],
+			fallbacks: ['Georgia', 'serif'],
+			options: { experimental: { variableAxis: { opsz: ['72'] } } },
+		},
+		// Voz de la Cocina: tipo de madera, rótulo de mercado.
+		{
+			provider: fontProviders.google(),
+			name: 'Ultra',
+			cssVariable: '--font-cocina',
+			weights: [400],
 			styles: ['normal'],
 			subsets: ['latin'],
-			fallbacks: ['system-ui', 'sans-serif'],
+			fallbacks: ['Rockwell', 'Georgia', 'serif'],
+		},
+		// Voz del Bar: alta y condensada, letrero de neón.
+		{
+			provider: fontProviders.google(),
+			name: 'Big Shoulders',
+			cssVariable: '--font-bar',
+			weights: [800],
+			styles: ['normal'],
+			subsets: ['latin'],
+			fallbacks: ['Impact', 'sans-serif'],
+			options: { experimental: { variableAxis: { opsz: ['72'] } } },
 		},
 	],
 });

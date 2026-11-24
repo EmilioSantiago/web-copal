@@ -52,10 +52,16 @@
 	);
 
 	/* ── Tipografía ── */
-	/* --font-titulos (Gloock) y --font-texto (Hanken Grotesk) los define
-	   el componente <Font /> de Astro en BaseLayout. */
+	/* Las variables --font-* las define el componente <Font /> de Astro
+	   en BaseLayout. Una fuente de texto y una voz de título por área:
+	   - texto:    Instrument Sans (párrafos, menú, botones, formularios)
+	   - titulos:  Newsreader (marca, Home; su itálica es la voz del Wine bar)
+	   - cocina:   Ultra (tipo de madera, rótulo de mercado)
+	   - bar:      Big Shoulders (alta y condensada, letrero de neón) */
 	--fuente-titulos: var(--font-titulos);
 	--fuente-texto: var(--font-texto);
+	--fuente-cocina: var(--font-cocina);
+	--fuente-bar: var(--font-bar);
 
 	/* Escala fluida: crece con la pantalla entre 375px y 1440px. */
 	--t-sm: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);

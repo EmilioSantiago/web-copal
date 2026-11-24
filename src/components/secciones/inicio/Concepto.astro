@@ -1,8 +1,8 @@
 ---
 /**
  * "De la costa a la sierra": el concepto de Copal.
- * Foto estrecha y alta a un lado, columna de texto estrecha al otro,
- * desfasadas en altura (layout editorial asimétrico).
+ * La foto del humo de copal recortada con la forma de una elipse de la hoja;
+ * el titular mezcla romana e itálica, y una cita en itálica fina.
  */
 import Foto from '../../ui/Foto.astro';
 import humo from '../../../assets/photos/ambiente/copal.webp';
@@ -17,69 +17,81 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<section class="concepto" aria-labelledby="concepto-titulo">
-	<div class="concepto-texto">
-		<h2 id="concepto-titulo">{t('inicio.concepto.titulo')}</h2>
-		<p>{t('inicio.concepto.texto1')}</p>
-		<p>{t('inicio.concepto.texto2')}</p>
+<section class="concepto" aria-labelledby="concepto-titulo" data-fondo="noche">
+	<div class="concepto-foto mascara-hoja revela">
+		<Foto
+			src={humo}
+			alt={t('inicio.concepto.alt')}
+			sizes="(min-width: 64rem) 32vw, 80vw"
+			class="concepto-img"
+		/>
 	</div>
-	<Foto
-		src={humo}
-		alt={t('inicio.concepto.alt')}
-		sizes="(min-width: 64rem) 34vw, 82vw"
-		class="concepto-foto"
-	/>
+	<div class="concepto-texto">
+		<h2 id="concepto-titulo" class="concepto-titular voz-marca">
+			<span>{t('inicio.concepto.linea1')}</span>
+			<span class="italica">{t('inicio.concepto.linea2')}</span>
+		</h2>
+		<p class="concepto-cita italica">{t('inicio.concepto.texto1')}</p>
+		<p class="concepto-fuego">{t('inicio.concepto.texto2')}</p>
+	</div>
 </section>
 
 <style>
 	.concepto {
 		display: grid;
-		gap: var(--e-7);
+		gap: var(--e-6);
 		max-width: var(--ancho-max);
 		margin-inline: auto;
 		padding: var(--e-9) var(--margen-lateral);
 	}
 
+	.concepto-foto {
+		width: min(80vw, 30rem);
+		aspect-ratio: 1;
+		justify-self: center;
+	}
+
+	.concepto-foto :global(.concepto-img) {
+		width: 100%;
+		height: 100%;
+	}
+
 	.concepto-texto {
 		display: grid;
-		gap: var(--e-4);
+		gap: var(--e-5);
+	}
+
+	.concepto-titular {
+		display: grid;
+		font-size: clamp(3rem, 1.6rem + 6vw, 7.5rem);
+		line-height: 0.92;
+	}
+
+	.concepto-titular .italica {
+		padding-inline-start: 1.2em;
+		color: var(--c-farol);
+	}
+
+	.concepto-cita {
+		max-width: 26ch;
+		font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2.1rem);
+		line-height: 1.2;
+	}
+
+	.concepto-fuego {
 		max-width: var(--medida-estrecha);
-	}
-
-	h2 {
-		font-size: var(--t-xl);
-		margin-block-end: var(--e-3);
-	}
-
-	.concepto-texto p {
-		font-size: var(--t-md);
-		line-height: 1.45;
-	}
-
-	.concepto :global(.concepto-foto) {
-		width: 82%;
-		justify-self: end;
-		aspect-ratio: 3 / 4;
+		color: var(--texto-suave);
 	}
 
 	@media (min-width: 64rem) {
 		.concepto {
-			grid-template-columns: repeat(12, minmax(0, 1fr));
+			grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
 			align-items: center;
+			column-gap: var(--e-8);
 		}
 
-		.concepto :global(.concepto-foto) {
-			grid-column: 2 / span 4;
-			grid-row: 1;
+		.concepto-foto {
 			width: 100%;
-			justify-self: stretch;
-		}
-
-		.concepto-texto {
-			grid-column: 7 / span 5;
-			grid-row: 1;
-			/* Desfase: el texto baja respecto a la foto. */
-			margin-block-start: var(--e-9);
 		}
 	}
 </style>

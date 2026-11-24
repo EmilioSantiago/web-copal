@@ -28,7 +28,6 @@
   "pendiente": "Pendiente",
   "inicio.lema": "Cocina de Oaxaca, de la costa a la sierra.",
   "inicio.hero.alt": "La entrada de Copal de noche: una gran lámpara tejida encendida al centro del pasillo.",
-  "inicio.concepto.titulo": "De la costa a la sierra",
   "inicio.concepto.texto1": "Oaxaca cabe en una mesa: el mar de la costa, los valles, el monte de la sierra.",
   "inicio.concepto.texto2": "Cocinamos ese viaje con fuego de leña.",
   "inicio.concepto.alt": "Una persona entre el humo de copal, en un pasillo iluminado en ámbar.",
@@ -42,5 +41,13 @@
   "inicio.bar.texto": "Bebidas con historia y colaboraciones con otros bares.",
   "inicio.bar.alt": "Un coctel con espuma, servido en copa sobre la barra.",
   "inicio.wineBar.texto": "Vinos, una sommelier y el Club Social del Vino.",
-  "inicio.wineBar.alt": "La mesa larga del wine bar, frente a la cava iluminada."
+  "inicio.wineBar.alt": "La mesa larga del wine bar, frente a la cava iluminada.",
+  "inicio.concepto.linea1": "De la costa",
+  "inicio.concepto.linea2": "a la sierra",
+  "inicio.patio.palabra": "Patio",
+  "inicio.tira.titulo": "De la cocina y la barra",
+  "tiempo.entradas": "Entradas",
+  "tiempo.ensaladas": "Ensaladas",
+  "tiempo.fuertes": "Fuertes",
+  "tiempo.postres": "Postres"
 }

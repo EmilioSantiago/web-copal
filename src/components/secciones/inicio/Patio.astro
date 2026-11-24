@@ -1,9 +1,9 @@
 ---
 /**
- * El patio con la parrilla de leña. No hay terraza aparte: el patio ES
- * el espacio exterior, y ahí está la parrilla.
- * En celular, mientras esta sección está al centro de la pantalla, el botón
- * fijo dice "Reservar en el patio" y muestra la nota.
+ * El patio con la parrilla de leña (no hay terraza aparte).
+ * Collage sobre barro: foto grande con marco desplazado, el parrillero
+ * superpuesto y la palabra "Patio" en contorno cruzando la foto.
+ * En celular, el botón fijo dice "Reservar en el patio" con su nota.
  */
 import Foto from '../../ui/Foto.astro';
 import patio from '../../../assets/photos/patio/espacios/restaurante-copal.webp';
@@ -22,98 +22,111 @@ const t = useTranslations(lang);
 <section
 	class="patio"
 	aria-labelledby="patio-titulo"
+	data-fondo="barro"
 	data-espacio-reservar={t('reservar.patio')}
 	data-espacio-nota={t('reservar.notaEspacio')}
 >
-	<Foto
-		src={patio}
-		alt={t('inicio.patio.alt')}
-		sizes="(min-width: 64rem) 58vw, 100vw"
-		class="patio-foto"
-	/>
-
-	<div class="patio-texto">
-		<h2 id="patio-titulo">{t('inicio.patio.titulo')}</h2>
-		<p>{t('inicio.patio.texto')}</p>
+	<div class="patio-foto marco marco--arriba-der revela">
+		<Foto src={patio} alt={t('inicio.patio.alt')} sizes="(min-width: 64rem) 50vw, 92vw" class="patio-img" />
 	</div>
 
-	<Foto
-		src={parrillero}
-		alt={t('inicio.parrilla.alt')}
-		sizes="(min-width: 64rem) 28vw, 70vw"
-		class="patio-parrilla"
-	/>
+	<p class="patio-contorno voz-cocina" aria-hidden="true">{t('inicio.patio.palabra')}</p>
+
+	<div class="patio-parrilla marco marco--abajo-izq enciende revela">
+		<Foto src={parrillero} alt={t('inicio.parrilla.alt')} sizes="(min-width: 64rem) 22vw, 52vw" class="patio-img" />
+	</div>
+
+	<div class="patio-texto">
+		<h2 id="patio-titulo" class="voz-cocina">{t('inicio.patio.titulo')}</h2>
+		<p>{t('inicio.patio.texto')}</p>
+	</div>
 </section>
 
 <style>
 	.patio {
+		position: relative;
 		display: grid;
 		gap: var(--e-6);
-		padding-block: var(--e-9);
-		background-color: var(--superficie);
-		/* La luz cálida del patio, desde abajo a la izquierda. */
-		background-image: radial-gradient(
-			ellipse 60% 50% at 10% 90%,
-			rgb(240 128 42 / 0.1),
-			transparent 70%
-		);
+		padding: var(--e-9) var(--margen-lateral);
+		background-color: var(--c-barro);
+		overflow: hidden;
 	}
 
-	.patio :global(.patio-foto) {
+	.patio :global(.patio-img) {
 		width: 100%;
+		height: 100%;
+	}
+
+	.patio-foto {
+		width: 92%;
 		aspect-ratio: 4 / 5;
+	}
+
+	/* "Patio" en contorno: dibuja sobre la foto sin taparla. */
+	.patio-contorno {
+		position: absolute;
+		inset-inline-start: var(--margen-lateral);
+		inset-block-start: 38%;
+		z-index: 4;
+		max-width: none;
+		font-size: clamp(5rem, 2rem + 14vw, 15rem);
+		line-height: 1;
+		color: transparent;
+		-webkit-text-stroke: 1.5px var(--c-copal);
+		opacity: 0.85;
+		pointer-events: none;
+	}
+
+	.patio-parrilla {
+		width: 52%;
+		aspect-ratio: 3 / 4;
+		justify-self: end;
+		margin-block-start: calc(-1 * var(--e-9));
+		z-index: 5;
 	}
 
 	.patio-texto {
 		display: grid;
 		gap: var(--e-4);
-		padding-inline: var(--margen-lateral);
-		max-width: calc(var(--medida-estrecha) + 2 * var(--margen-lateral));
 	}
 
-	h2 {
-		font-size: var(--t-xl);
+	.patio-texto h2 {
+		font-size: clamp(2.4rem, 1.4rem + 4vw, 5rem);
 	}
 
-	.patio :global(.patio-parrilla) {
-		width: 70%;
-		justify-self: end;
-		margin-inline-end: var(--margen-lateral);
-		aspect-ratio: 3 / 4;
+	.patio-texto p {
+		max-width: var(--medida-estrecha);
 	}
 
-	/* Escritorio: foto grande a sangre por la izquierda; texto y parrilla a la derecha. */
 	@media (min-width: 64rem) {
 		.patio {
-			grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-			grid-template-rows: auto 1fr;
-			column-gap: var(--e-8);
-			row-gap: var(--e-7);
-			padding-inline-end: var(--margen-lateral);
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+			align-items: start;
 		}
 
-		.patio :global(.patio-foto) {
-			grid-column: 1;
+		.patio-foto {
+			grid-column: 1 / span 6;
 			grid-row: 1 / span 2;
-			height: 100%;
-			aspect-ratio: auto;
-			min-height: 44rem;
+			width: 100%;
+		}
+
+		.patio-contorno {
+			inset-block-start: 30%;
+		}
+
+		.patio-parrilla {
+			grid-column: 6 / span 3;
+			grid-row: 2;
+			width: 100%;
+			margin: 0;
+			align-self: end;
+			transform: translateY(var(--e-8));
 		}
 
 		.patio-texto {
-			grid-column: 2;
+			grid-column: 9 / span 4;
 			grid-row: 1;
-			padding-inline: 0;
-			padding-block-start: var(--e-7);
-		}
-
-		.patio :global(.patio-parrilla) {
-			grid-column: 2;
-			grid-row: 2;
-			align-self: end;
-			justify-self: start;
-			width: 78%;
-			margin-inline-end: 0;
+			padding-block-start: var(--e-8);
 		}
 	}
 </style>

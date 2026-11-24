@@ -1,0 +1,73 @@
+---
+/**
+ * La firma de Copal: la hoja cuyas 11 elipses aparecen como brasas,
+ * de abajo hacia arriba (~0.9 s). Copiada TAL CUAL del Hero del inicio:
+ * mismo SVG, mismos keyframes `brasa`, mismos retrasos y mismo resplandor.
+ * Solo se anima si la persona no pidió menos movimiento.
+ *
+ * El tamaño se controla desde fuera con la clase (height) o con --alto-hoja.
+ */
+import Hoja from '../../assets/logo/hoja-copal.svg';
+
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<Hoja class:list={['hoja-brasas', className]} aria-hidden="true" focusable="false" />
+
+<style>
+	.hoja-brasas {
+		width: auto;
+		height: var(--alto-hoja, clamp(4.5rem, 3.5rem + 4vw, 7.5rem));
+		color: var(--c-farol);
+		filter: drop-shadow(0 0 1.25rem rgb(240 128 42 / 0.45));
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.hoja-brasas :global(ellipse) {
+			animation: brasa 0.45s ease-out both;
+		}
+
+		.hoja-brasas :global(ellipse:nth-child(10)),
+		.hoja-brasas :global(ellipse:nth-child(11)) {
+			animation-delay: 0.05s;
+		}
+		.hoja-brasas :global(ellipse:nth-child(8)),
+		.hoja-brasas :global(ellipse:nth-child(9)) {
+			animation-delay: 0.13s;
+		}
+		.hoja-brasas :global(ellipse:nth-child(6)),
+		.hoja-brasas :global(ellipse:nth-child(7)) {
+			animation-delay: 0.21s;
+		}
+		.hoja-brasas :global(ellipse:nth-child(4)),
+		.hoja-brasas :global(ellipse:nth-child(5)) {
+			animation-delay: 0.29s;
+		}
+		.hoja-brasas :global(ellipse:nth-child(2)),
+		.hoja-brasas :global(ellipse:nth-child(3)) {
+			animation-delay: 0.37s;
+		}
+		.hoja-brasas :global(ellipse:nth-child(1)) {
+			animation-delay: 0.45s;
+		}
+	}
+
+	@keyframes brasa {
+		0% {
+			opacity: 0.12;
+			fill: var(--c-barro);
+		}
+		60% {
+			opacity: 1;
+			fill: var(--c-cempasuchil);
+		}
+		100% {
+			opacity: 1;
+			fill: var(--c-farol);
+		}
+	}
+</style>

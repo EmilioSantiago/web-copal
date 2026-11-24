@@ -28,7 +28,6 @@
   "pendiente": "Pending",
   "inicio.lema": "Oaxacan cooking, from the coast to the sierra.",
   "inicio.hero.alt": "Copal's entrance at night: a large woven lamp glowing in the middle of the hallway.",
-  "inicio.concepto.titulo": "From the coast to the sierra",
   "inicio.concepto.texto1": "Oaxaca fits on one table: the sea of the coast, the valleys, the mountains of the sierra.",
   "inicio.concepto.texto2": "We cook that journey over a wood fire.",
   "inicio.concepto.alt": "A person in copal smoke, in an amber-lit hallway.",
@@ -42,5 +41,13 @@
   "inicio.bar.texto": "Drinks with a story, and collaborations with other bars.",
   "inicio.bar.alt": "A cocktail with foam, served in a coupe on the bar.",
   "inicio.wineBar.texto": "Wine, a sommelier and the Club Social del Vino.",
-  "inicio.wineBar.alt": "The wine bar's long table, facing the lit wine wall."
+  "inicio.wineBar.alt": "The wine bar's long table, facing the lit wine wall.",
+  "inicio.concepto.linea1": "From the coast",
+  "inicio.concepto.linea2": "to the sierra",
+  "inicio.patio.palabra": "Patio",
+  "inicio.tira.titulo": "From the kitchen and the bar",
+  "tiempo.entradas": "Starters",
+  "tiempo.ensaladas": "Salads",
+  "tiempo.fuertes": "Mains",
+  "tiempo.postres": "Desserts"
 }

@@ -2,12 +2,13 @@
 /**
  * Vista del inicio (recibe el idioma).
  * Hero (entrada) → concepto "De la costa a la sierra" → patio con parrilla
- * → adelantos de cocina, bar y wine bar → reserva.
+ * → tira de platillos y bebidas → índice de áreas → reserva.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/secciones/inicio/Hero.astro';
 import Concepto from '../components/secciones/inicio/Concepto.astro';
 import Patio from '../components/secciones/inicio/Patio.astro';
+import Tira from '../components/secciones/inicio/Tira.astro';
 import Adelantos from '../components/secciones/inicio/Adelantos.astro';
 import ReservaBlock from '../components/reserva/ReservaBlock.astro';
 import type { Lang } from '../i18n/routes';
@@ -23,6 +24,82 @@ const { lang } = Astro.props;
 	<Hero lang={lang} />
 	<Concepto lang={lang} />
 	<Patio lang={lang} />
+	<Tira lang={lang} />
 	<Adelantos lang={lang} />
 	<ReservaBlock lang={lang} />
 </BaseLayout>
+
+<script>
+	/*
+	 * Movimiento del inicio (GSAP + ScrollTrigger). Se carga SOLO si no hay
+	 * prefers-reduced-motion y después del evento load: no toca el LCP.
+	 * Sin JS, todo se ve completo y quieto.
+	 */
+	import { conMovimiento } from '../scripts/movimiento';
+
+	conMovimiento((gsap, ScrollTrigger) => {
+		// 1) Fondos vivos: el color de la página pasa de noche a barro y de
+		//    vuelta según el área que ocupa el centro de la pantalla.
+		//    Se pinta en <body>, debajo de la luz del farol, para no taparla.
+		const body = document.body;
+		const colores: Record<string, string> = { noche: '#120e0b', barro: '#5b2418' };
+		body.dataset.fondosVivos = '';
+		gsap.utils.toArray<HTMLElement>('[data-fondo]').forEach((seccion) => {
+			ScrollTrigger.create({
+				trigger: seccion,
+				start: 'top 55%',
+				end: 'bottom 55%',
+				onToggle: (st) => {
+					if (!st.isActive) return;
+					gsap.to(body, {
+						backgroundColor: colores[seccion.dataset.fondo ?? 'noche'],
+						duration: 0.7,
+						ease: 'power2.out',
+					});
+				},
+			});
+		});
+
+		// 2) Revelado: la foto se descubre de abajo hacia arriba, como una página.
+		gsap.utils.toArray<HTMLElement>('.revela').forEach((el) => {
+			gsap.from(el, {
+				clipPath: 'inset(100% 0% 0% 0%)',
+				duration: 1.2,
+				ease: 'power3.inOut',
+				scrollTrigger: { trigger: el, start: 'top 85%' },
+			});
+		});
+
+		// 3) Solo escritorio: la tira se fija y avanza en horizontal con el scroll.
+		const mm = gsap.matchMedia();
+		mm.add('(min-width: 64rem)', () => {
+			const seccion = document.querySelector<HTMLElement>('[data-tira]');
+			const pista = document.querySelector<HTMLElement>('[data-tira-pista]');
+			if (!seccion || !pista) return;
+			seccion.dataset.horizontal = '';
+			ScrollTrigger.refresh();
+			const distancia = () => pista.scrollWidth - window.innerWidth + 64;
+			gsap.to(pista, {
+				x: () => -distancia(),
+				ease: 'none',
+				scrollTrigger: {
+					trigger: seccion,
+					start: 'top top',
+					end: () => `+=${distancia()}`,
+					pin: true,
+					scrub: 1,
+					invalidateOnRefresh: true,
+				},
+			});
+			// Al salir de escritorio, vuelve a ser una fila deslizable.
+			return () => delete seccion.dataset.horizontal;
+		});
+	});
+</script>
+
+<style>
+	/* Con fondos vivos, las secciones se vuelven transparentes y manda <body>. */
+	:global(body[data-fondos-vivos] [data-fondo]) {
+		background-color: transparent;
+	}
+</style>

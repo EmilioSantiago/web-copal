@@ -116,6 +116,173 @@ a:hover {
 	object-fit: cover;
 }
 
+/* ═══ Voces tipográficas por área ═══ */
+.voz-marca {
+	font-family: var(--fuente-titulos);
+	font-weight: 400;
+	letter-spacing: -0.025em;
+}
+
+/* Itálica fina de Newsreader: lemas, citas, Wine bar. */
+.italica {
+	font-family: var(--fuente-titulos);
+	font-style: italic;
+	font-weight: 300;
+}
+
+.voz-cocina {
+	font-family: var(--fuente-cocina);
+	font-weight: 400;
+	letter-spacing: -0.01em;
+	line-height: 0.95;
+}
+
+.voz-bar {
+	font-family: var(--fuente-bar);
+	font-weight: 800;
+	line-height: 0.85;
+}
+
+.voz-wine {
+	font-family: var(--fuente-titulos);
+	font-style: italic;
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	line-height: 0.95;
+}
+
+/* ═══ Atmósfera (decorativa, nunca recibe clics) ═══ */
+
+/* Grano de película: ruido SVG en data URI, quieto (no gasta batería). */
+.grano {
+	position: fixed;
+	inset: 0;
+	z-index: 90;
+	pointer-events: none;
+	opacity: 0.05;
+	mix-blend-mode: overlay;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Farol que respira: luz cálida abajo a la izquierda, pulso lento de 8 s.
+   Solo anima opacity/transform (lo más barato para el navegador). */
+.farol-respira {
+	position: fixed;
+	inset: auto auto -20vh -15vw;
+	z-index: 0;
+	width: 70vw;
+	height: 70vh;
+	pointer-events: none;
+	background: radial-gradient(closest-side, rgb(240 128 42 / 0.14), transparent);
+	opacity: 0.8;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.farol-respira {
+		animation: respirar 8s ease-in-out infinite;
+	}
+}
+
+@keyframes respirar {
+	0%,
+	100% {
+		opacity: 0.55;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 1;
+		transform: scale(1.06);
+	}
+}
+
+/* El contenido va por encima del farol. */
+main,
+footer {
+	position: relative;
+	z-index: 1;
+}
+
+/* ═══ Recursos de foto ═══ */
+
+/* Velo del "encendido": capa oscura sobre la foto que se desvanece en 0.9 s.
+   La foto se pinta desde el primer cuadro: no afecta el LCP. */
+.velo-encender {
+	position: relative;
+}
+
+.velo-encender::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	background-color: var(--c-noche);
+	opacity: 0;
+	pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.velo-encender::before {
+		animation: encender 0.9s var(--curva) 0.05s both;
+	}
+}
+
+@keyframes encender {
+	from {
+		opacity: 0.68;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+/* Marco desplazado: línea naranja fina detrás de la foto (collage).
+   Variantes por clase (sin estilos en línea, por la futura CSP). */
+.marco {
+	position: relative;
+	isolation: isolate;
+	--marco-x: 0.9rem;
+	--marco-y: 0.9rem;
+}
+
+.marco::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	border: 1px solid rgb(240 128 42 / 0.7);
+	transform: translate(var(--marco-x), var(--marco-y));
+	pointer-events: none;
+}
+
+.marco--abajo-izq {
+	--marco-x: -0.7rem;
+	--marco-y: 0.7rem;
+}
+
+.marco--arriba-der {
+	--marco-x: 1.1rem;
+	--marco-y: -1.1rem;
+}
+
+/* Máscara con la forma de una elipse de la hoja de Copal (inclinada 18.5°). */
+.mascara-hoja {
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cellipse cx='50' cy='50' rx='27' ry='49' transform='rotate(18.5 50 50)'/%3E%3C/svg%3E") center / contain no-repeat;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cellipse cx='50' cy='50' rx='27' ry='49' transform='rotate(18.5 50 50)'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* "Enciende": con cursor, la foto sube de luz como un farol.
+   En celular (sin hover) las fotos se ven a plena luz siempre. */
+@media (hover: hover) and (pointer: fine) {
+	.enciende img {
+		filter: brightness(0.8) saturate(0.95);
+		transition: filter 0.5s var(--curva);
+	}
+
+	.enciende:is(:hover, :focus-within) img {
+		filter: brightness(1.06) saturate(1.06);
+	}
+}
+
 /* Solo para lectores de pantalla. */
 .sr-only {
 	position: absolute;

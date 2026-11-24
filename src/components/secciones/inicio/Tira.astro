@@ -1,0 +1,117 @@
+---
+/**
+ * Tira de platillos y bebidas. Fotos y alt salen de las colecciones
+ * (platillos y bebidas): ningún nombre de platillo hasta que se confirme.
+ * - Celular: carrusel nativo con scroll-snap (sin JavaScript).
+ * - Escritorio: GSAP la fija y la hace avanzar en horizontal con el scroll
+ *   (solo si hay movimiento permitido; si no, queda como fila deslizable).
+ */
+import { getCollection } from 'astro:content';
+import Foto from '../../ui/Foto.astro';
+import type { Lang } from '../../../i18n/routes';
+import { useTranslations } from '../../../i18n/utils';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const orden = ['entradas', 'ensaladas', 'fuertes', 'postres'] as const;
+const platillos = (await getCollection('platillos'))
+	.filter((p) => p.data.foto)
+	.sort((a, b) => orden.indexOf(a.data.tiempo) - orden.indexOf(b.data.tiempo) || a.data.orden - b.data.orden);
+const bebidas = (await getCollection('bebidas'))
+	.filter((b) => b.data.foto)
+	.sort((a, b) => a.data.orden - b.data.orden);
+
+const items = [
+	...platillos.map((p) => ({ etiqueta: t(`tiempo.${p.data.tiempo}` as const), foto: p.data.foto! })),
+	...bebidas.map((b) => ({ etiqueta: t(b.data.area === 'bar' ? 'nav.bar' : 'nav.wineBar'), foto: b.data.foto! })),
+];
+---
+
+<section class="tira" aria-labelledby="tira-titulo" data-fondo="noche" data-tira>
+	<h2 id="tira-titulo" class="tira-titulo italica">{t('inicio.tira.titulo')}</h2>
+	<ul class="tira-pista" role="list" data-tira-pista>
+		{
+			items.map((f) => (
+				<li class="tira-item enciende">
+					<Foto src={f.foto.src} alt={f.foto.alt[lang]} sizes="(min-width: 64rem) 26vw, 70vw" class="tira-img" />
+					<span class="tira-etiqueta">{f.etiqueta}</span>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<style>
+	.tira {
+		padding-block: var(--e-9) var(--e-8);
+		overflow: hidden;
+	}
+
+	.tira-titulo {
+		padding-inline: var(--margen-lateral);
+		margin-block-end: var(--e-7);
+		font-size: clamp(2.2rem, 1.4rem + 3vw, 4.5rem);
+	}
+
+	.tira-pista {
+		display: flex;
+		gap: var(--e-5);
+		margin: 0;
+		padding: 0 var(--margen-lateral) var(--e-3);
+		list-style: none;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scroll-padding-inline: var(--margen-lateral);
+		scrollbar-width: thin;
+		scrollbar-color: var(--c-veta) transparent;
+	}
+
+	.tira-item {
+		position: relative;
+		flex: 0 0 70vw;
+		aspect-ratio: 3 / 4;
+		scroll-snap-align: start;
+	}
+
+	.tira-item :global(.tira-img) {
+		width: 100%;
+		height: 100%;
+	}
+
+	.tira-etiqueta {
+		position: absolute;
+		inset-inline-start: var(--e-4);
+		inset-block-end: var(--e-4);
+		padding: var(--e-1) var(--e-3);
+		background: rgb(18 14 11 / 0.85);
+		font-size: var(--t-sm);
+	}
+
+	@media (min-width: 64rem) {
+		.tira-item {
+			flex-basis: 26vw;
+		}
+
+		.tira-item:nth-child(even) {
+			margin-block-start: var(--e-8);
+		}
+
+		/* Lo activa GSAP: la sección se fija y la pista avanza en horizontal. */
+		.tira[data-horizontal] {
+			display: grid;
+			align-content: center;
+			height: 100svh;
+			padding-block: var(--alto-header) 0;
+		}
+
+		.tira[data-horizontal] .tira-pista {
+			width: max-content;
+			overflow: visible;
+		}
+	}
+</style>
